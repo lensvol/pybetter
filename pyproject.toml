@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "better"
+version = "0.1.0"
+description = "Tool for fixing trivial problems with your code."
+authors = ["Kirill Borisov <lensvol@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.6"
+libcst = "^0.2.6"
+
+[tool.poetry.dev-dependencies]
+ipdb = "^0.12.3"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
