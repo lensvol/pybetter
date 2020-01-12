@@ -2,6 +2,7 @@ from abc import ABC
 
 from pybetter.transformers.mutable_args import ArgEmptyInitTransformer
 from pybetter.transformers.not_in import NotInConditionTransformer
+from pybetter.transformers.parenthesized_return import RemoveParenthesesFromReturn
 
 
 class BaseImprovement(ABC):
@@ -28,3 +29,10 @@ class FixMutableDefaultArgs(BaseImprovement):
     DESCRIPTION = "Default values for **kwargs are mutable."
     CODE = "W002"
     TRANSFORMER = ArgEmptyInitTransformer
+
+
+class FixParenthesesInReturn(BaseImprovement):
+    NAME = "parenthesis_return"
+    DESCRIPTION = "Remove parentheses from the tuple in 'return' statement."
+    CODE = "W003"
+    TRANSFORMER = RemoveParenthesesFromReturn
