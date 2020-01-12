@@ -1,19 +1,21 @@
+from typing import List
+
 import click
 import libcst as cst
 
 from pybetter.improvements import *
 
-IMPROVEMENTS = [
+IMPROVEMENTS: List[BaseImprovement] = [
     FixNotInConditionOrder(),
     FixMutableDefaultArgs(),
     FixParenthesesInReturn(),
 ]
 
 
-def process_file(source):
-    tree = cst.parse_module(source)
-    wrapped_tree = cst.MetadataWrapper(tree, unsafe_skip_copy=True)
-    modified_tree = wrapped_tree.module
+def process_file(source: str) -> str:
+    tree: cst.Module = cst.parse_module(source)
+    wrapped_tree: cst.MetadataWrapper = cst.MetadataWrapper(tree, unsafe_skip_copy=True)
+    modified_tree: cst.Module = wrapped_tree.module
 
     for case in IMPROVEMENTS:
         intermediate_tree = modified_tree
@@ -38,11 +40,12 @@ def cli():
     help="Do not make any changes to the source files.",
 )
 @click.argument("sources", type=click.File("r+"), nargs=-1)
-def main(sources, noop):
+def main(sources, noop: bool):
     for source_file in sources:
         print(f"--> Processing '{source_file.name}'...")
-        original_source = source = source_file.read()
-        processed_source = process_file(source)
+
+        original_source: str = source_file.read()
+        processed_source: str = process_file(original_source)
 
         if original_source == processed_source:
             print("  Nothing changed.")

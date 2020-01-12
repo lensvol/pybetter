@@ -1,6 +1,7 @@
 from typing import Union
 
 import libcst as cst
+import typing
 from libcst import (
     FunctionDef,
     RemovalSentinel,
@@ -17,6 +18,9 @@ from libcst import (
     Newline,
     IndentedBlock,
     BaseStatement,
+    EmptyLine,
+    Param,
+    Parameters,
 )
 
 
@@ -25,10 +29,10 @@ class ArgEmptyInitTransformer(cst.CSTTransformer):
         super(ArgEmptyInitTransformer, self).__init__()
 
     def leave_FunctionDef(
-        self, original_node: "FunctionDef", updated_node: "FunctionDef"
-    ) -> Union["BaseStatement", RemovalSentinel]:
-        modified_defaults = []
-        mutable_args = {}
+        self, original_node: FunctionDef, updated_node: FunctionDef
+    ) -> Union[BaseStatement, RemovalSentinel]:
+        modified_defaults: typing.List = []
+        mutable_args: typing.Dict[Name, Union[List, Dict]] = {}
 
         for default_param in original_node.params.params:
             if isinstance(default_param.default, (List, Dict)):
@@ -39,9 +43,11 @@ class ArgEmptyInitTransformer(cst.CSTTransformer):
             else:
                 modified_defaults.append(default_param)
 
-        modified_params = original_node.params.with_changes(params=modified_defaults)
+        modified_params: Parameters = original_node.params.with_changes(
+            params=modified_defaults
+        )
 
-        inits = [
+        initializations: typing.List[If] = [
             If(
                 test=Comparison(
                     left=Name(value=arg.value, lpar=[], rpar=[]),
@@ -65,13 +71,13 @@ class ArgEmptyInitTransformer(cst.CSTTransformer):
                             ]
                         )
                     ],
-                    footer=[Newline(value=None)],
+                    footer=[EmptyLine(newline=Newline(value=None))],
                 ),
             )
             for arg, init in mutable_args.items()
         ]
 
-        modified_body = (*inits, *original_node.body.body)
+        modified_body = (*initializations, *original_node.body.body)
 
         return updated_node.with_changes(
             params=modified_params,

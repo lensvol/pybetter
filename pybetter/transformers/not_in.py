@@ -1,6 +1,7 @@
+from typing import List
+
 import libcst as cst
 import libcst.matchers as m
-from libcst import BaseExpression, UnaryOperation, Comparison, NotIn
 
 
 class NotInConditionTransformer(cst.CSTTransformer):
@@ -11,16 +12,17 @@ class NotInConditionTransformer(cst.CSTTransformer):
         )
     )
     def leave_UnaryOperation(
-        self, original_node: "UnaryOperation", updated_node: "UnaryOperation"
-    ) -> "BaseExpression":
-        fixed_comparisons = []
+        self, original_node: cst.UnaryOperation, updated_node: cst.UnaryOperation
+    ) -> cst.BaseExpression:
+        fixed_comparisons: List[cst.ComparisonTarget] = []
+        comparison_node: cst.Comparison = cst.ensure_type(
+            original_node.expression, cst.Comparison
+        )
 
-        for target in original_node.expression.comparisons:
+        for target in comparison_node.comparisons:
             if m.matches(target, m.ComparisonTarget(operator=m.In())):
-                fixed_comparisons.append(target.with_changes(operator=NotIn()))
+                fixed_comparisons.append(target.with_changes(operator=cst.NotIn()))
             else:
                 fixed_comparisons.append(target)
 
-        return Comparison(
-            left=original_node.expression.left, comparisons=fixed_comparisons
-        )
+        return cst.Comparison(left=comparison_node.left, comparisons=fixed_comparisons)

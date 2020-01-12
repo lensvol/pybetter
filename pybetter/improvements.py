@@ -1,15 +1,18 @@
 from abc import ABC
 
+import libcst as cst
+from typing_extensions import Type
+
 from pybetter.transformers.mutable_args import ArgEmptyInitTransformer
 from pybetter.transformers.not_in import NotInConditionTransformer
 from pybetter.transformers.parenthesized_return import RemoveParenthesesFromReturn
 
 
 class BaseImprovement(ABC):
-    CODE = None
-    NAME = None
-    DESCRIPTION = None
-    TRANSFORMER = None
+    CODE: str
+    NAME: str
+    DESCRIPTION: str
+    TRANSFORMER: Type[cst.CSTTransformer]
 
     def improve(self, tree):
         assert self.TRANSFORMER, "Transformation should be specified!"
