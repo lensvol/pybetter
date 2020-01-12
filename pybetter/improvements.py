@@ -17,6 +17,6 @@ class BaseImprovement(ABC):
 
 class FixNotInConditionOrder(BaseImprovement):
     NAME = "not_in"
-    DESCRIPTION = "Replace 'not ... in ...' with '... not in ...'"
+    DESCRIPTION = "Replace 'not A in B' with 'A not in B'"
     CODE = "W001"
     TRANSFORMER = NotInConditionTransformer
