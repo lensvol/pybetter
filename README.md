@@ -24,7 +24,7 @@ Options:
 
 ## Example
 
-```python
+```shell
 # cat test.py
 def f():
   return (42, "Hello, world")
