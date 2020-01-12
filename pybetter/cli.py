@@ -20,7 +20,7 @@ def process_file(source):
         modified_tree = case.improve(intermediate_tree)
 
         if not modified_tree.deep_equals(intermediate_tree):
-            print(f"  [+] {case.DESCRIPTION} ({case.CODE})")
+            print(f"  [+] ({case.CODE}) {case.DESCRIPTION}")
 
     return modified_tree.code
 
