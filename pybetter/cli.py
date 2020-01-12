@@ -1,9 +1,9 @@
 import click
 import libcst as cst
 
-from pybetter.improvements import FixNotInConditionOrder
+from pybetter.improvements import FixNotInConditionOrder, FixMutableDefaultArgs
 
-IMPROVEMENTS = [FixNotInConditionOrder()]
+IMPROVEMENTS = [FixNotInConditionOrder(), FixMutableDefaultArgs()]
 
 
 def process_file(source):
