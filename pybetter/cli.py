@@ -15,6 +15,9 @@ def process_file(source):
         intermediate_tree = modified_tree
         modified_tree = case.improve(intermediate_tree)
 
+        if not modified_tree.deep_equals(intermediate_tree):
+            print(f"  [+] {case.DESCRIPTION} ({case.CODE})")
+
     return modified_tree.code
 
 
@@ -27,8 +30,17 @@ def cli():
 @click.argument("sources", type=click.File("r+"), nargs=-1)
 def main(sources):
     for source_file in sources:
-        source = source_file.read()
+        print(f"--> Processing '{source_file.name}'...")
+        original_source = source = source_file.read()
         processed_source = process_file(source)
-        source_file.seek(0)
-        source_file.truncate()
-        source_file.write(processed_source)
+
+        if original_source == processed_source:
+            print("  Nothing changed.")
+        else:
+            source_file.seek(0)
+            source_file.truncate()
+            source_file.write(processed_source)
+
+        print()
+
+    print("All done!")
