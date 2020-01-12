@@ -20,19 +20,19 @@ class BaseImprovement(ABC):
 class FixNotInConditionOrder(BaseImprovement):
     NAME = "not_in"
     DESCRIPTION = "Replace 'not A in B' with 'A not in B'"
-    CODE = "W001"
+    CODE = "B001"
     TRANSFORMER = NotInConditionTransformer
 
 
 class FixMutableDefaultArgs(BaseImprovement):
     NAME = "mutable_defaults"
     DESCRIPTION = "Default values for **kwargs are mutable."
-    CODE = "W002"
+    CODE = "B002"
     TRANSFORMER = ArgEmptyInitTransformer
 
 
 class FixParenthesesInReturn(BaseImprovement):
     NAME = "parenthesis_return"
     DESCRIPTION = "Remove parentheses from the tuple in 'return' statement."
-    CODE = "W003"
+    CODE = "B003"
     TRANSFORMER = RemoveParenthesesFromReturn
