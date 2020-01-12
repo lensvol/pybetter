@@ -31,8 +31,14 @@ def cli():
 
 
 @cli.command()
+@click.option(
+    "--noop",
+    is_flag=True,
+    default=False,
+    help="Do not make any changes to the source files.",
+)
 @click.argument("sources", type=click.File("r+"), nargs=-1)
-def main(sources):
+def main(sources, noop):
     for source_file in sources:
         print(f"--> Processing '{source_file.name}'...")
         original_source = source = source_file.read()
@@ -40,10 +46,14 @@ def main(sources):
 
         if original_source == processed_source:
             print("  Nothing changed.")
-        else:
-            source_file.seek(0)
-            source_file.truncate()
-            source_file.write(processed_source)
+            continue
+
+        if noop:
+            continue
+
+        source_file.seek(0)
+        source_file.truncate()
+        source_file.write(processed_source)
 
         print()
 
