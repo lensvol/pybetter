@@ -8,11 +8,12 @@ IMPROVEMENTS = [FixNotInConditionOrder()]
 
 def process_file(source):
     tree = cst.parse_module(source)
-    wrapped_tree = cst.MetadataWrapper(tree)
-    modified_tree = wrapped_tree
+    wrapped_tree = cst.MetadataWrapper(tree, unsafe_skip_copy=True)
+    modified_tree = wrapped_tree.module
 
     for case in IMPROVEMENTS:
-        modified_tree = case.improve(modified_tree)
+        intermediate_tree = modified_tree
+        modified_tree = case.improve(intermediate_tree)
 
     return modified_tree.code
 
