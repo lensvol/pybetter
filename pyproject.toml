@@ -4,6 +4,25 @@ version = "0.1.0"
 description = "Tool for fixing trivial problems with your code."
 authors = ["Kirill Borisov <lensvol@gmail.com>"]
 license = "MIT"
+readme = "README.md"
+repository = "https://github.com/lensvol/pybetter"
+keywords = ["ast"]
+include = [
+    "LICENSE",
+]
+classifiers = [
+    "Environment :: Console",
+    "Operating System :: OS Independent",
+    "Development Status :: 3 - Alpha",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Topic :: Utilities",
+    "Topic :: Software Development",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3.6",
+    "Topic :: Software Development :: Quality Assurance",
+]
+
 
 [tool.poetry.dependencies]
 python = "^3.6"
