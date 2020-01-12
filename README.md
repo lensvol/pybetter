@@ -6,13 +6,43 @@
 
 Tool for fixing trivial problems with your code.
 
-Originally intended as an example for my PyCon Belarus 2020.
+Originally intended as an example for my PyCon Belarus 2020 talk about [LibCST](https://github.com/Instagram/LibCST).
 
 ## Usage
 
 Simply provide a valid Python source code file as one of the argument and it will try to fix any issues it could find.
 
-Available fixers:
+```
+Usage: pybetter [OPTIONS] [SOURCES]...
+
+Options:
+  --noop  Do not make any changes to the source files.
+  --help  Show this message and exit.
+```
+
+
+
+## Example
+
+```python
+# cat test.py
+def f():
+  return (42, "Hello, world")
+
+# pybetter test.py
+--> Processing 'test.py'...
+  [+] (B003) Remove parentheses from the tuple in 'return' statement.
+All done!
+
+# cat test.py
+def f():
+  return 42, "Hello, world"
+
+```
+
+
+
+## Available fixers
 
 * **B001: Replace 'not A in B' with 'A not in B'**
 
