@@ -1,7 +1,6 @@
 from typing import List
 
 import click
-import libcst as cst
 
 from pybetter.improvements import *
 
@@ -41,6 +40,10 @@ def cli():
 )
 @click.argument("sources", type=click.File("r+"), nargs=-1)
 def main(sources, noop: bool):
+    if not sources:
+        print("Nothing to do.")
+        return
+
     for source_file in sources:
         print(f"--> Processing '{source_file.name}'...")
 
