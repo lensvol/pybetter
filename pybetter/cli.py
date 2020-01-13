@@ -1,6 +1,8 @@
 from typing import List
 
 import click
+import libcst as cst
+from pyemojify import emojify
 
 from pybetter.improvements import *
 
@@ -41,7 +43,7 @@ def cli():
 @click.argument("sources", type=click.File("r+"), nargs=-1)
 def main(sources, noop: bool):
     if not sources:
-        print("Nothing to do.")
+        print(emojify("Nothing to do. :sleeping:"))
         return
 
     for source_file in sources:
@@ -63,4 +65,4 @@ def main(sources, noop: bool):
 
         print()
 
-    print("All done!")
+    print(emojify(":sparkles: All done! :sparkles:"))
