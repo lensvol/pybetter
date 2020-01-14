@@ -1,8 +1,10 @@
 from abc import ABC
 
 import libcst as cst
+from libcst import MetadataWrapper
 from typing_extensions import Type
 
+from pybetter.transformers.all_attribute import AllAttributeTransformer
 from pybetter.transformers.mutable_args import ArgEmptyInitTransformer
 from pybetter.transformers.not_in import NotInConditionTransformer
 from pybetter.transformers.parenthesized_return import RemoveParenthesesFromReturn
@@ -14,10 +16,12 @@ class BaseImprovement(ABC):
     DESCRIPTION: str
     TRANSFORMER: Type[cst.CSTTransformer]
 
-    def improve(self, tree):
-        assert self.TRANSFORMER, "Transformation should be specified!"
+    def improve(self, tree: cst.Module):
+        transformer = self.TRANSFORMER()
 
-        return tree.visit(self.TRANSFORMER())
+        wrapper = MetadataWrapper(tree)
+        with transformer.resolve(wrapper):
+            return wrapper.visit(transformer)
 
 
 class FixNotInConditionOrder(BaseImprovement):

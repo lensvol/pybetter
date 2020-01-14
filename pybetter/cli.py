@@ -14,8 +14,7 @@ IMPROVEMENTS: List[BaseImprovement] = [
 
 def process_file(source: str) -> str:
     tree: cst.Module = cst.parse_module(source)
-    wrapped_tree: cst.MetadataWrapper = cst.MetadataWrapper(tree, unsafe_skip_copy=True)
-    modified_tree: cst.Module = wrapped_tree.module
+    modified_tree: cst.Module = tree
 
     for case in IMPROVEMENTS:
         intermediate_tree = modified_tree
