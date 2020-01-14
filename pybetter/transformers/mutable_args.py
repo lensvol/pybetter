@@ -1,7 +1,7 @@
+import typing
 from typing import Union
 
 import libcst as cst
-import typing
 from libcst import (
     FunctionDef,
     RemovalSentinel,
@@ -19,7 +19,6 @@ from libcst import (
     IndentedBlock,
     BaseStatement,
     EmptyLine,
-    Param,
     Parameters,
 )
 
