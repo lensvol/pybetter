@@ -32,6 +32,7 @@ pyemojify = "^0.2.0"
 
 [tool.poetry.dev-dependencies]
 ipdb = "^0.12.3"
+mypy = "^0.761"
 
 [tool.poetry.scripts]
 pybetter = 'pybetter.cli:main'
