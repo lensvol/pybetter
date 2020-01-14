@@ -9,6 +9,7 @@ IMPROVEMENTS: List[BaseImprovement] = [
     FixNotInConditionOrder(),
     FixMutableDefaultArgs(),
     FixParenthesesInReturn(),
+    FixMissingAllAttribute(),
 ]
 
 

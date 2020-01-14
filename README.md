@@ -95,6 +95,27 @@ def f():
     return "World", 42
   ```
 
+* **B004: __all__ attribute is missing..**
+
+  Regenerate missing `__all__` attribute, filling it with the list of top-level function and class names.
+
+  ```python
+  # BEFORE:
+  def hello():
+    return ("World", 42)
+  
+  # AFTER:
+  def hello():
+    return "World", 42
+  
+  class F:
+    pass
+  
+  __all__ = [
+    "F",
+    "hello",
+  ]
+  ```
   
 
 ## Installation

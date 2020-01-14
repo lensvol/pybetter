@@ -43,3 +43,10 @@ class FixParenthesesInReturn(BaseImprovement):
     DESCRIPTION = "Remove parentheses from the tuple in 'return' statement."
     CODE = "B003"
     TRANSFORMER = RemoveParenthesesFromReturn
+
+
+class FixMissingAllAttribute(BaseImprovement):
+    NAME = "missing_all"
+    DESCRIPTION = "__all__ attribute is missing."
+    CODE = "B004"
+    TRANSFORMER = AllAttributeTransformer
