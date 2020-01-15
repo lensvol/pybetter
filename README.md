@@ -27,7 +27,7 @@ Options:
 ```shell
 # cat test.py
 def f():
-  return (42, "Hello, world")
+    return (42, "Hello, world")
 
 # pybetter test.py
 --> Processing 'test.py'...
@@ -36,7 +36,7 @@ All done!
 
 # cat test.py
 def f():
-  return 42, "Hello, world"
+    return 42, "Hello, world"
 
 ```
 
@@ -51,11 +51,11 @@ def f():
   ```python
   # BEFORE:
   if not 42 in counts:
-    sys.exit(-1)
+      sys.exit(-1)
   
   # AFTER:
   if 42 not in counts:
-    sys.exit(-1)
+      sys.exit(-1)
   ```
 
   
@@ -69,14 +69,14 @@ def f():
   ```python
   # BEFORE
   def p(a=[]):
-    print(a)
+      print(a)
     
   # AFTER
   def p(a=None):
-    if a is None:
-      a = []
+      if a is None:
+          a = []
       
-    print(a)
+      print(a)
   ```
 
   Be warned, that this fix may break code which *intentionally* uses mutable default arguments (e.g. caching).
@@ -88,28 +88,33 @@ def f():
   ```python
   # BEFORE:
   def hello():
-    return ("World", 42)
+      return ("World", 42)
   
   # AFTER:
   def hello():
-    return "World", 42
+      return "World", 42
   ```
 
-* **B004: __all__ attribute is missing..**
+* **B004: `__all__` attribute is missing..**
 
   Regenerate missing `__all__` attribute, filling it with the list of top-level function and class names.
 
+  *NB*: It will ignore any names starting with `_` to prevent any private members from ending up in the list.
+  
   ```python
   # BEFORE:
-  def hello():
-    return ("World", 42)
+def hello():
+      return ("World", 42)
+  
+  class F:
+      pass
   
   # AFTER:
   def hello():
-    return "World", 42
+      return "World", 42
   
   class F:
-    pass
+      pass
   
   __all__ = [
     "F",
