@@ -1,3 +1,4 @@
+import difflib
 from typing import List
 
 import click
@@ -39,8 +40,15 @@ def cli():
     default=False,
     help="Do not make any changes to the source files.",
 )
+@click.option(
+    "--diff",
+    "show_diff",
+    is_flag=True,
+    default=False,
+    help="Show diff-like output of the changes made.",
+)
 @click.argument("sources", type=click.File("r+"), nargs=-1)
-def main(sources, noop: bool):
+def main(sources, noop: bool, show_diff: bool):
     if not sources:
         print(emojify("Nothing to do. :sleeping:"))
         return
@@ -54,6 +62,19 @@ def main(sources, noop: bool):
         if original_source == processed_source:
             print("  Nothing changed.")
             continue
+
+        if show_diff:
+            print()
+            print(
+                "".join(
+                    difflib.unified_diff(
+                        original_source.splitlines(keepends=True),
+                        processed_source.splitlines(keepends=True),
+                        fromfile=source_file.name,
+                        tofile=source_file.name,
+                    )
+                )
+            )
 
         if noop:
             continue
