@@ -5,15 +5,20 @@ import libcst.matchers as m
 
 
 class NotInConditionTransformer(cst.CSTTransformer):
-    @m.call_if_inside(
-        m.UnaryOperation(
-            operator=m.Not(),
-            expression=m.Comparison(comparisons=[m.ComparisonTarget(operator=m.In())]),
-        )
-    )
     def leave_UnaryOperation(
         self, original_node: cst.UnaryOperation, updated_node: cst.UnaryOperation
     ) -> cst.BaseExpression:
+        if not m.matches(
+            original_node,
+            m.UnaryOperation(
+                operator=m.Not(),
+                expression=m.Comparison(
+                    comparisons=[m.ComparisonTarget(operator=m.In())]
+                ),
+            ),
+        ):
+            return original_node
+
         fixed_comparisons: List[cst.ComparisonTarget] = []
         comparison_node: cst.Comparison = cst.ensure_type(
             original_node.expression, cst.Comparison

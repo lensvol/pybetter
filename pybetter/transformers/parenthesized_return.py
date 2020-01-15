@@ -3,9 +3,15 @@ import libcst.matchers as m
 
 
 class RemoveParenthesesFromReturn(cst.CSTTransformer):
-    @m.call_if_inside(m.Return(value=m.Tuple()))
-    @m.leave(m.DoesNotMatch(m.Tuple(lpar=[])))
-    def leave_Tuple(
-        self, original_node: cst.Tuple, updated_node: cst.Tuple
-    ) -> cst.Tuple:
-        return original_node.with_changes(lpar=[], rpar=[])
+    def leave_Return(
+        self, original_node: cst.Return, updated_node: cst.Return
+    ) -> cst.Return:
+        if not m.matches(original_node.value, m.Tuple()):
+            return original_node
+
+        if not original_node.value.lpar:
+            return original_node
+
+        changed_tuple = original_node.value.with_changes(lpar=[], rpar=[])
+
+        return original_node.with_changes(value=changed_tuple)
