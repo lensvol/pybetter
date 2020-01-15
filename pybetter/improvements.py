@@ -5,6 +5,7 @@ from libcst import MetadataWrapper
 from typing_extensions import Type
 
 from pybetter.transformers.all_attribute import AllAttributeTransformer
+from pybetter.transformers.equals_none import EqualsNoneIsNoneTransformer
 from pybetter.transformers.mutable_args import ArgEmptyInitTransformer
 from pybetter.transformers.not_in import NotInConditionTransformer
 from pybetter.transformers.parenthesized_return import RemoveParenthesesFromReturn
@@ -50,3 +51,10 @@ class FixMissingAllAttribute(BaseImprovement):
     DESCRIPTION = "__all__ attribute is missing."
     CODE = "B004"
     TRANSFORMER = AllAttributeTransformer
+
+
+class FixEqualsNone(BaseImprovement):
+    NAME = "equals_none"
+    DESCRIPTION = "Replace 'a == None' with 'a is None'."
+    CODE = "B005"
+    TRANSFORMER = EqualsNoneIsNoneTransformer

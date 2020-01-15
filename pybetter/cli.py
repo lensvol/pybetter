@@ -11,6 +11,7 @@ IMPROVEMENTS: List[BaseImprovement] = [
     FixMutableDefaultArgs(),
     FixParenthesesInReturn(),
     FixMissingAllAttribute(),
+    FixEqualsNone(),
 ]
 
 

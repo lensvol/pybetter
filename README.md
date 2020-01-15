@@ -122,6 +122,21 @@ def hello():
   ]
   ```
   
+* **B005: Replace "A == None" with "A is None"**
+
+  "Comparisons to singletons like None should always be done with `is` or `is not`, never the equality operators." ([PEP8](https://www.python.org/dev/peps/pep-0008/))
+
+  ```python
+  # BEFORE:
+  
+  if a == None:
+      pass
+    
+  # AFTER:
+  
+  if a is None:
+      pass
+  ```
 
 ## Installation
 
