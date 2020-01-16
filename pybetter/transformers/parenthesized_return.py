@@ -14,4 +14,4 @@ class RemoveParenthesesFromReturn(cst.CSTTransformer):
 
         changed_tuple = original_node.value.with_changes(lpar=[], rpar=[])
 
-        return original_node.with_changes(value=changed_tuple)
+        return updated_node.with_changes(value=changed_tuple)

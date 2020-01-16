@@ -15,7 +15,7 @@ class EqualsNoneIsNoneTransformer(cst.CSTTransformer):
         ):
             return original_node
 
-        return original_node.with_changes(
+        return updated_node.with_changes(
             operator=cst.Is(
                 whitespace_after=original_node.operator.whitespace_after,
                 whitespace_before=original_node.operator.whitespace_before,
