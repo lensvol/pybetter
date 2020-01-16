@@ -12,6 +12,7 @@ IMPROVEMENTS: List[BaseImprovement] = [
     FixParenthesesInReturn(),
     FixMissingAllAttribute(),
     FixEqualsNone(),
+    FixBooleanEqualityChecks(),
 ]
 
 

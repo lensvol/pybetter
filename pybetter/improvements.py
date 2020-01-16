@@ -5,6 +5,7 @@ from libcst import MetadataWrapper
 from typing_extensions import Type
 
 from pybetter.transformers.all_attribute import AllAttributeTransformer
+from pybetter.transformers.boolean_equality import BooleanLiteralEqualityTransformer
 from pybetter.transformers.equals_none import EqualsNoneIsNoneTransformer
 from pybetter.transformers.mutable_args import ArgEmptyInitTransformer
 from pybetter.transformers.not_in import NotInConditionTransformer
@@ -58,3 +59,10 @@ class FixEqualsNone(BaseImprovement):
     DESCRIPTION = "Replace 'a == None' with 'a is None'."
     CODE = "B005"
     TRANSFORMER = EqualsNoneIsNoneTransformer
+
+
+class FixBooleanEqualityChecks(BaseImprovement):
+    NAME = "false_true_equality"
+    DESCRIPTION = "Remove comparisons with either 'False' or 'True'."
+    CODE = "B006"
+    TRANSFORMER = BooleanLiteralEqualityTransformer

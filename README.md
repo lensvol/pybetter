@@ -137,6 +137,27 @@ def f():
   if a is None:
       pass
   ```
+  
+* **B006: Remove comparisons with either 'False' or 'True'.**
+
+  [PEP8](https://www.python.org/dev/peps/pep-0008/) recommends that conditions should be evaluated without explicit equality comparison with `True`/`False` singletons. In Python, every non-empty value is treated as `True` and vice versa,
+
+  so in most cases those comparisons can be safely eliminated.
+
+  *NB*: `is True` and `is False` checks are not affected, since they can be used to explicitly check for equality with a specific singleton, instead of using abovementioned "non-empty" heuristic.
+
+  ```python
+  # BEFORE:
+  
+  if a == False or b == True or c == False == True:
+      pass
+    
+  # AFTER:
+  
+  if a or b or c:
+      pass
+  
+  ```
 
 ## Installation
 
