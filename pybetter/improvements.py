@@ -6,6 +6,7 @@ from typing_extensions import Type
 
 from pybetter.transformers.all_attribute import AllAttributeTransformer
 from pybetter.transformers.boolean_equality import BooleanLiteralEqualityTransformer
+from pybetter.transformers.empty_fstring import TrivialFmtStringTransformer
 from pybetter.transformers.equals_none import EqualsNoneIsNoneTransformer
 from pybetter.transformers.mutable_args import ArgEmptyInitTransformer
 from pybetter.transformers.not_in import NotInConditionTransformer
@@ -66,3 +67,10 @@ class FixBooleanEqualityChecks(BaseImprovement):
     DESCRIPTION = "Remove comparisons with either 'False' or 'True'."
     CODE = "B006"
     TRANSFORMER = BooleanLiteralEqualityTransformer
+
+
+class FixTrivialFmtStringCreation(BaseImprovement):
+    NAME = "trivial_fstring"
+    DESCRIPTION = "Convert f-strings without expressions into regular strings."
+    CODE = "B007"
+    TRANSFORMER = TrivialFmtStringTransformer

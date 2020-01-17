@@ -13,6 +13,7 @@ IMPROVEMENTS: List[BaseImprovement] = [
     FixMissingAllAttribute(),
     FixEqualsNone(),
     FixBooleanEqualityChecks(),
+    FixTrivialFmtStringCreation(),
 ]
 
 
