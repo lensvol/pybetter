@@ -158,6 +158,18 @@ def f():
       pass
   
   ```
+  
+* **B007: Convert f-strings without expressions into regular strings.**
+
+  It is wasteful to use f-string mechanism if there are no expressions to be extrapolated. 
+
+  ```python
+  # BEFORE:
+  a = f"Hello, world"
+  
+  # AFTER:
+  a = "Hello, world"
+  ```
 
 ## Installation
 
