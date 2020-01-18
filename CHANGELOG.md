@@ -1,6 +1,17 @@
 # Version history
 
+## 0.2.1
 
+### Features:
+
+* New "improvements" added:
+  * **B007: Convert f-strings without expressions into regular strings.**
+
+### Misc:
+
+* Fix some typing violations.
+
+  
 
 ## 0.2.0
 
