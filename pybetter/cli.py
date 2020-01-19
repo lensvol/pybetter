@@ -5,6 +5,7 @@ import click
 from pyemojify import emojify
 
 from pybetter.improvements import *
+from pybetter.utils import resolve_paths
 
 IMPROVEMENTS: List[BaseImprovement] = [
     FixNotInConditionOrder(),
@@ -50,42 +51,45 @@ def cli():
     default=False,
     help="Show diff-like output of the changes made.",
 )
-@click.argument("sources", type=click.File("r+"), nargs=-1)
-def main(sources, noop: bool, show_diff: bool):
-    if not sources:
+@click.argument("paths", type=click.Path(), nargs=-1)
+def main(paths, noop: bool, show_diff: bool):
+    if not paths:
         print(emojify("Nothing to do. :sleeping:"))
         return
 
-    for source_file in sources:
-        print(f"--> Processing '{source_file.name}'...")
+    python_files = filter(lambda fn: fn.endswith(".py"), resolve_paths(*paths))
 
-        original_source: str = source_file.read()
-        processed_source: str = process_file(original_source)
+    for path_to_source in python_files:
+        with open(path_to_source, 'r+') as source_file:
+            print(f"--> Processing '{source_file.name}'...")
 
-        if original_source == processed_source:
-            print("  Nothing changed.")
-            continue
+            original_source: str = source_file.read()
+            processed_source: str = process_file(original_source)
 
-        if show_diff:
-            print()
-            print(
-                "".join(
-                    difflib.unified_diff(
-                        original_source.splitlines(keepends=True),
-                        processed_source.splitlines(keepends=True),
-                        fromfile=source_file.name,
-                        tofile=source_file.name,
+            if original_source == processed_source:
+                print("  Nothing changed.")
+                continue
+
+            if show_diff:
+                print()
+                print(
+                    "".join(
+                        difflib.unified_diff(
+                            original_source.splitlines(keepends=True),
+                            processed_source.splitlines(keepends=True),
+                            fromfile=source_file.name,
+                            tofile=source_file.name,
+                        )
                     )
                 )
-            )
 
-        if noop:
-            continue
+            if noop:
+                continue
 
-        source_file.seek(0)
-        source_file.truncate()
-        source_file.write(processed_source)
+            source_file.seek(0)
+            source_file.truncate()
+            source_file.write(processed_source)
 
-        print()
+            print()
 
     print(emojify(":sparkles: All done! :sparkles:"))
