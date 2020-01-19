@@ -5,11 +5,13 @@ class TrivialFmtStringTransformer(cst.CSTTransformer):
     def leave_FormattedString(
         self, original_node: cst.FormattedString, updated_node: cst.FormattedString
     ) -> cst.BaseExpression:
-        if len(updated_node.parts) == 1 and isinstance(updated_node.parts[0], cst.FormattedStringText):
+        if len(updated_node.parts) == 1 and isinstance(
+            updated_node.parts[0], cst.FormattedStringText
+        ):
             # We need to explicitly specify quotation marks here, otherwise we
             # will fail SimpleString's internal validation. This is due to
             # SimpleString._get_prefix treating everything before quotation
             # marks as a prefix. (sic!)
-            return cst.SimpleString(value=f"\"{updated_node.parts[0].value}\"")
+            return cst.SimpleString(value=f'"{updated_node.parts[0].value}"')
 
         return original_node
