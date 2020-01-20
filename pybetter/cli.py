@@ -1,5 +1,5 @@
 import difflib
-from typing import List
+from typing import List, FrozenSet
 
 import click
 from pyemojify import emojify
@@ -16,6 +16,25 @@ ALL_IMPROVEMENTS: List[BaseImprovement] = [
     FixBooleanEqualityChecks(),
     FixTrivialFmtStringCreation(),
 ]
+
+
+def parse_improvement_codes(code_list: str) -> FrozenSet[str]:
+    all_codes = frozenset([improvement.CODE for improvement in ALL_IMPROVEMENTS])
+    codes = frozenset([code.strip() for code in code_list.split(",")]) - {""}
+
+    if not codes:
+        return frozenset()
+
+    wrong_codes = codes.difference(all_codes)
+    if wrong_codes:
+        print(
+            emojify(
+                f":no_entry_sign: Unknown improvements selected: {','.join(wrong_codes)}"
+            )
+        )
+        return frozenset()
+
+    return codes
 
 
 def process_file(source: str, improvements: List[BaseImprovement]) -> str:
@@ -58,33 +77,51 @@ def cli():
     metavar="CODES",
     help="Apply only improvements with the provided codes.",
 )
+@click.option(
+    "--exclude",
+    "excluded",
+    type=str,
+    metavar="CODES",
+    help="Exclude improvements with the provided codes.",
+)
 @click.argument("paths", type=click.Path(), nargs=-1)
-def main(paths, noop: bool, show_diff: bool, selected: str):
+def main(paths, noop: bool, show_diff: bool, selected: str, excluded: str):
     if not paths:
         print(emojify("Nothing to do. :sleeping:"))
         return
 
-    python_files = filter(lambda fn: fn.endswith(".py"), resolve_paths(*paths))
-
     selected_improvements = ALL_IMPROVEMENTS
-    if selected:
-        all_codes = frozenset([improvement.CODE for improvement in ALL_IMPROVEMENTS])
-        selected_codes = frozenset(map(str.strip, selected.split(",")))
 
-        wrong_codes = selected_codes.difference(all_codes)
-        if wrong_codes:
-            print(
-                emojify(
-                    f":no_entry_sign: Unknown improvements selected: {','.join(wrong_codes)}"
-                )
+    if selected and excluded:
+        print(
+            emojify(
+                ":no_entry_sign: '--select' and '--exclude' options are mutually exclusive!"
             )
-            return
+        )
+        return
+
+    if selected:
+        selected_codes = parse_improvement_codes(selected)
 
         selected_improvements = [
             improvement
             for improvement in ALL_IMPROVEMENTS
             if improvement.CODE in selected_codes
         ]
+    elif excluded:
+        excluded_codes = parse_improvement_codes(excluded)
+
+        selected_improvements = [
+            improvement
+            for improvement in ALL_IMPROVEMENTS
+            if improvement.CODE not in excluded_codes
+        ]
+
+    if not selected_improvements:
+        print(emojify(f":sleeping: No improvements to apply."))
+        return
+
+    python_files = filter(lambda fn: fn.endswith(".py"), resolve_paths(*paths))
 
     for path_to_source in python_files:
         with open(path_to_source, "r+") as source_file:
