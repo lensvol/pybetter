@@ -65,9 +65,7 @@ def f():
 
 * **B002: Default values for `kwargs` are mutable.**
 
-  As described in [Common Gotchas] (https://docs.python-guide.org/writing/gotchas/#mutable-default-arguments) section of "The Hitchhiker's Guide to Python", mutable arguments can be a tricky thing. 
-
-  This fixer replaces any default values that happen to be lists or dicts with **None** value, moving initialization from function definition into function body.
+  As described in [Common Gotchas](https://docs.python-guide.org/writing/gotchas/#mutable-default-arguments) section of "The Hitchhiker's Guide to Python", mutable arguments can be a tricky thing. This fixer replaces any default values that happen to be lists or dicts with **None** value, moving initialization from function definition into function body.
 
   ```python
   # BEFORE
