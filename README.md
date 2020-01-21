@@ -13,11 +13,14 @@ Originally intended as an example for my PyCon Belarus 2020 talk about [LibCST](
 Simply provide a valid Python source code file as one of the argument and it will try to fix any issues it could find.
 
 ```
-Usage: pybetter [OPTIONS] [SOURCES]...
+Usage: pybetter [OPTIONS] [PATHS]...
 
 Options:
-  --noop  Do not make any changes to the source files.
-  --help  Show this message and exit.
+  --noop           Do not make any changes to the source files.
+  --diff           Show diff-like output of the changes made.
+  --select CODES   Apply only improvements with the provided codes.
+  --exclude CODES  Exclude improvements with the provided codes.
+  --help           Show this message and exit.
 ```
 
 
