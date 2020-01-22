@@ -4,12 +4,14 @@ import libcst as cst
 from libcst.metadata import ScopeProvider, GlobalScope
 import libcst.matchers as m
 
+from pybetter.transformers.base import NoqaAwareTransformer
 
-class AllAttributeTransformer(cst.CSTTransformer):
+
+class AllAttributeTransformer(NoqaAwareTransformer):
     METADATA_DEPENDENCIES = (ScopeProvider,)
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.names = []
         self.already_exists = False
 

@@ -3,8 +3,10 @@ from typing import List
 import libcst as cst
 import libcst.matchers as m
 
+from pybetter.transformers.base import NoqaAwareTransformer
 
-class NotInConditionTransformer(cst.CSTTransformer):
+
+class NotInConditionTransformer(NoqaAwareTransformer):
     def leave_UnaryOperation(
         self, original_node: cst.UnaryOperation, updated_node: cst.UnaryOperation
     ) -> cst.BaseExpression:

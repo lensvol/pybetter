@@ -1,7 +1,9 @@
 import libcst as cst
 
+from pybetter.transformers.base import NoqaAwareTransformer
 
-class TrivialFmtStringTransformer(cst.CSTTransformer):
+
+class TrivialFmtStringTransformer(NoqaAwareTransformer):
     def leave_FormattedString(
         self, original_node: cst.FormattedString, updated_node: cst.FormattedString
     ) -> cst.BaseExpression:

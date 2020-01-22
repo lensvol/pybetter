@@ -1,8 +1,10 @@
 import libcst as cst
 import libcst.matchers as m
 
+from pybetter.transformers.base import NoqaAwareTransformer
 
-class RemoveParenthesesFromReturn(cst.CSTTransformer):
+
+class RemoveParenthesesFromReturn(NoqaAwareTransformer):
     def leave_Return(
         self, original_node: cst.Return, updated_node: cst.Return
     ) -> cst.Return:

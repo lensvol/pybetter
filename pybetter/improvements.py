@@ -20,9 +20,9 @@ class BaseImprovement(ABC):
     TRANSFORMER: Type[cst.CSTTransformer]
 
     def improve(self, tree: cst.Module):
-        transformer = self.TRANSFORMER()
-
+        transformer = self.TRANSFORMER(self.CODE)
         wrapper = MetadataWrapper(tree)
+
         with transformer.resolve(wrapper):
             return wrapper.visit(transformer)
 

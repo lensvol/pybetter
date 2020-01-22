@@ -22,11 +22,10 @@ from libcst import (
     Parameters,
 )
 
+from pybetter.transformers.base import NoqaAwareTransformer
 
-class ArgEmptyInitTransformer(cst.CSTTransformer):
-    def __init__(self):
-        super(ArgEmptyInitTransformer, self).__init__()
 
+class ArgEmptyInitTransformer(NoqaAwareTransformer):
     def leave_FunctionDef(
         self, original_node: FunctionDef, updated_node: FunctionDef
     ) -> Union[BaseStatement, RemovalSentinel]:

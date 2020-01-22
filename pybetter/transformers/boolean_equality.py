@@ -3,8 +3,10 @@ from typing import List
 import libcst as cst
 from libcst import matchers as m
 
+from pybetter.transformers.base import NoqaAwareTransformer
 
-class BooleanLiteralEqualityTransformer(cst.CSTTransformer):
+
+class BooleanLiteralEqualityTransformer(NoqaAwareTransformer):
     def leave_Comparison(
         self, original_node: cst.Comparison, updated_node: cst.Comparison
     ) -> cst.BaseExpression:

@@ -3,8 +3,10 @@ from typing import Union
 import libcst as cst
 from libcst import matchers as m
 
+from pybetter.transformers.base import NoqaAwareTransformer
 
-class EqualsNoneIsNoneTransformer(cst.CSTTransformer):
+
+class EqualsNoneIsNoneTransformer(NoqaAwareTransformer):
     def leave_ComparisonTarget(
         self, original_node: cst.ComparisonTarget, updated_node: cst.ComparisonTarget
     ) -> Union[cst.ComparisonTarget, cst.RemovalSentinel]:
