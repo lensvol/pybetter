@@ -1,32 +1,45 @@
+import re
+from typing import Dict, Set, Optional
+
 import libcst as cst
+from libcst.metadata import PositionProvider
+
+NOQA_MARKUP_REGEX = re.compile(r"noqa: (B[0-9]{3})+")
 
 
-class BaseStatementLine(object):
-    pass
+class NoqaDetectionVisitor(cst.CSTVisitor):
+    METADATA_DEPENDENCIES = (PositionProvider,)
+
+    def __init__(self):
+        self._line_to_code: Dict[int, Set[str]] = {}
+
+        super().__init__()
+
+    def visit_Comment(self, node: cst.Comment) -> Optional[bool]:
+        m = re.search(NOQA_MARKUP_REGEX, node.value)
+        if m:
+            check_code = m.group(1)
+            comment_position: cst.CodeRange = self.get_metadata(PositionProvider, node)
+            self._line_to_code[comment_position.start.line] = {check_code}
+
+        return True
+
+    def get_noqa_lines(self):
+        return self._line_to_code
 
 
 class NoqaAwareTransformer(cst.CSTTransformer):
-    def __init__(self, code):
+    METADATA_DEPENDENCIES = (PositionProvider,)
+
+    def __init__(self, code: str, noqa_lines: Dict[int, Set[str]]):
         self.check_code = code
+        self.noqa_lines = noqa_lines
         super().__init__()
 
-    def on_visit(self, node: cst.If):
-        comment_string = None
-
-        if (
-            isinstance(node, cst.SimpleStatementLine)
-            and node.trailing_whitespace
-            and node.trailing_whitespace.comment
-        ):
-            comment_string = node.trailing_whitespace.comment.value
-
-        if isinstance(node, cst.BaseCompoundStatement) and node.leading_lines:
-            for line in node.leading_lines:
-                if line.comment:
-                    comment_string = line.comment.value
-                    break
-
-        if comment_string:
-            return f"noqa: {self.check_code}" not in comment_string
+    def on_visit(self, node: cst.CSTNode):
+        position = self.get_metadata(PositionProvider, node)
+        applicable_noqa = self.noqa_lines.get(position.start.line, set())
+        if self.check_code in applicable_noqa:
+            return False
 
         return super().on_visit(node)

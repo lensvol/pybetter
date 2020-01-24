@@ -1,7 +1,10 @@
+import re
 from abc import ABC
+from typing import Optional, Set, Dict
 
 import libcst as cst
-from libcst import MetadataWrapper
+from libcst import MetadataWrapper, CodeRange
+from libcst.metadata import PositionProvider
 from typing_extensions import Type
 
 from pybetter.transformers.all_attribute import AllAttributeTransformer
@@ -20,10 +23,12 @@ class BaseImprovement(ABC):
     TRANSFORMER: Type[cst.CSTTransformer]
 
     def improve(self, tree: cst.Module):
-        transformer = self.TRANSFORMER(self.CODE)
+        noqa_detector = NoqaDetectionVisitor()
         wrapper = MetadataWrapper(tree)
 
-        with transformer.resolve(wrapper):
+        with noqa_detector.resolve(wrapper):
+            wrapper.visit(noqa_detector)
+            transformer = self.TRANSFORMER(self.CODE, noqa_detector.get_noqa_lines())
             return wrapper.visit(transformer)
 
 
