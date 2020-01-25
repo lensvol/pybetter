@@ -1,13 +1,11 @@
-import re
 from abc import ABC
-from typing import Optional, Set, Dict
 
 import libcst as cst
-from libcst import MetadataWrapper, CodeRange
-from libcst.metadata import PositionProvider
+from libcst import MetadataWrapper
 from typing_extensions import Type
 
 from pybetter.transformers.all_attribute import AllAttributeTransformer
+from pybetter.transformers.base import NoqaDetectionVisitor
 from pybetter.transformers.boolean_equality import BooleanLiteralEqualityTransformer
 from pybetter.transformers.empty_fstring import TrivialFmtStringTransformer
 from pybetter.transformers.equals_none import EqualsNoneIsNoneTransformer

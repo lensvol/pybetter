@@ -4,7 +4,7 @@ from typing import Dict, Set, Optional
 import libcst as cst
 from libcst.metadata import PositionProvider
 
-NOQA_MARKUP_REGEX = re.compile(r"noqa: (B[0-9]{3})+")
+NOQA_MARKUP_REGEX = re.compile(r"noqa: ((?:B[0-9]{3},)?(?:B[0-9]{3}))")
 
 
 class NoqaDetectionVisitor(cst.CSTVisitor):
@@ -18,9 +18,9 @@ class NoqaDetectionVisitor(cst.CSTVisitor):
     def visit_Comment(self, node: cst.Comment) -> Optional[bool]:
         m = re.search(NOQA_MARKUP_REGEX, node.value)
         if m:
-            check_code = m.group(1)
+            codes = m.group(1)
             comment_position: cst.CodeRange = self.get_metadata(PositionProvider, node)
-            self._line_to_code[comment_position.start.line] = {check_code}
+            self._line_to_code[comment_position.start.line] = set(codes.split(","))
 
         return True
 
