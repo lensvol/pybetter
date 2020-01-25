@@ -4,7 +4,8 @@ from typing import Dict, Set, Optional
 import libcst as cst
 from libcst.metadata import PositionProvider
 
-NOQA_MARKUP_REGEX = re.compile(r"noqa: ((?:B[0-9]{3},)?(?:B[0-9]{3}))")
+NOQA_MARKUP_REGEX = re.compile(r"noqa(?:: ((?:B[0-9]{3},)+(?:B[0-9]{3})))?")
+NOQA_CATCHALL = "B999"
 
 
 class NoqaDetectionVisitor(cst.CSTVisitor):
@@ -19,8 +20,11 @@ class NoqaDetectionVisitor(cst.CSTVisitor):
         m = re.search(NOQA_MARKUP_REGEX, node.value)
         if m:
             codes = m.group(1)
-            comment_position: cst.CodeRange = self.get_metadata(PositionProvider, node)
-            self._line_to_code[comment_position.start.line] = set(codes.split(","))
+            position: cst.CodeRange = self.get_metadata(PositionProvider, node)
+            if codes:
+                self._line_to_code[position.start.line] = set(codes.split(","))
+            else:
+                self._line_to_code[position.start.line] = frozenset({NOQA_CATCHALL})
 
         return True
 
@@ -39,7 +43,7 @@ class NoqaAwareTransformer(cst.CSTTransformer):
     def on_visit(self, node: cst.CSTNode):
         position = self.get_metadata(PositionProvider, node)
         applicable_noqa = self.noqa_lines.get(position.start.line, set())
-        if self.check_code in applicable_noqa:
+        if self.check_code in applicable_noqa or NOQA_CATCHALL in applicable_noqa:
             return False
 
         return super().on_visit(node)
