@@ -15,22 +15,29 @@ class AllAttributeTransformer(NoqaAwareTransformer):
         self.names = []
         self.already_exists = False
 
-    def process_name(self, node: Union[cst.FunctionDef, cst.ClassDef]) -> None:
+    def process_node(
+        self,
+        node: Union[cst.FunctionDef, cst.ClassDef, cst.BaseAssignTargetExpression],
+        name: str,
+    ) -> None:
         scope = self.get_metadata(ScopeProvider, node)
-        if isinstance(scope, GlobalScope) and not node.name.value.startswith("_"):
-            self.names.append(node.name.value)
+        if isinstance(scope, GlobalScope) and not name.startswith("_"):
+            self.names.append(name)
 
     def visit_AssignTarget(self, node: cst.AssignTarget) -> Optional[bool]:
-        if m.matches(node, m.AssignTarget(target=m.Name(value="__all__"))):
-            self.already_exists = True
+        if m.matches(node, m.AssignTarget(target=m.Name())):
+            if node.target.value == "__all__":
+                self.already_exists = True
+            else:
+                self.process_node(node.target, node.target.value)
         return None
 
     def visit_FunctionDef(self, node: cst.FunctionDef) -> Optional[bool]:
-        self.process_name(node)
+        self.process_node(node, node.name.value)
         return None
 
     def visit_ClassDef(self, node: cst.ClassDef) -> Optional[bool]:
-        self.process_name(node)
+        self.process_node(node, node.name.value)
         return None
 
     def leave_Module(
