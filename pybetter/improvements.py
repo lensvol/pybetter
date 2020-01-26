@@ -5,7 +5,7 @@ from libcst import MetadataWrapper
 from typing_extensions import Type
 
 from pybetter.transformers.all_attribute import AllAttributeTransformer
-from pybetter.transformers.base import NoqaDetectionVisitor
+from pybetter.transformers.base import NoqaDetectionVisitor, NoqaAwareTransformer
 from pybetter.transformers.boolean_equality import BooleanLiteralEqualityTransformer
 from pybetter.transformers.empty_fstring import TrivialFmtStringTransformer
 from pybetter.transformers.equals_none import EqualsNoneIsNoneTransformer
@@ -18,7 +18,7 @@ class BaseImprovement(ABC):
     CODE: str
     NAME: str
     DESCRIPTION: str
-    TRANSFORMER: Type[cst.CSTTransformer]
+    TRANSFORMER: Type[NoqaAwareTransformer]
 
     def improve(self, tree: cst.Module):
         noqa_detector = NoqaDetectionVisitor()

@@ -8,7 +8,7 @@ from pybetter.transformers.base import NoqaAwareTransformer
 
 
 class AllAttributeTransformer(NoqaAwareTransformer):
-    METADATA_DEPENDENCIES = (ScopeProvider,)
+    METADATA_DEPENDENCIES = (ScopeProvider,)  # type: ignore
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
