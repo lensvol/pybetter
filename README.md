@@ -172,6 +172,10 @@ def f():
   a = "Hello, world"
   ```
 
+
+
+**NB:** Each of the fixers can be disabled on per-line basis using [flake8's "noqa" comments](http://flake8.pycqa.org/en/3.1.1/user/ignoring-errors.html#in-line-ignoring-errors).
+
 ## Installation
 
 ```shell script
