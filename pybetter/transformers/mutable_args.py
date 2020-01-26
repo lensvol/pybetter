@@ -1,7 +1,6 @@
 import typing
 from typing import Union
 
-import libcst as cst
 from libcst import (
     FunctionDef,
     RemovalSentinel,

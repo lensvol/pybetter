@@ -1,10 +1,20 @@
 import difflib
 from typing import List, FrozenSet
 
+import libcst as cst
 import click
 from pyemojify import emojify
 
-from pybetter.improvements import *
+from pybetter.improvements import (
+    FixNotInConditionOrder,
+    BaseImprovement,
+    FixMutableDefaultArgs,
+    FixParenthesesInReturn,
+    FixMissingAllAttribute,
+    FixEqualsNone,
+    FixBooleanEqualityChecks,
+    FixTrivialFmtStringCreation,
+)
 from pybetter.utils import resolve_paths
 
 ALL_IMPROVEMENTS: List[BaseImprovement] = [
