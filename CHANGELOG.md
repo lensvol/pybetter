@@ -1,5 +1,22 @@
 # Version history
 
+
+
+## 0.3.0
+
+### Features:
+
+* Now we will recurse over every path provided and process all `*.py` files found.
+* Added support for `--select`/`--ignore` options for fine-tuning set of checks being run.
+* Added support for per-line disabling of specific checks using `noqa` comments.
+
+### Bugfixes:
+
+* Variable names and constants are now properly added to `__all__` attribute.
+* Small fixes in README.
+
+
+
 ## 0.2.1
 
 ### Features:
