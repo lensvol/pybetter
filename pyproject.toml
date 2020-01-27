@@ -34,6 +34,7 @@ pyemojify = "^0.2.0"
 ipdb = "^0.12.3"
 mypy = "^0.761"
 flake8 = "^3.7.9"
+pytest = "^5.3.4"
 
 [tool.poetry.scripts]
 pybetter = 'pybetter.cli:main'
