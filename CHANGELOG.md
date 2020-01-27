@@ -1,6 +1,6 @@
 # Version history
 
-## 0.3.1 WIP
+## 0.3.1
 
 ### Bugfixes:
 
