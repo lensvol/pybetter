@@ -4,6 +4,7 @@
 
 ### Bugfixes:
 
+* (B003) No longer remove parentheses from multi-line return statements.
 * (B004) `a == False` is now correctly reduced to `not a`.
 
 ## 0.3.0
