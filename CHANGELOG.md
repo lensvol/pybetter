@@ -1,6 +1,10 @@
 # Version history
 
+## 0.3.1 WIP
 
+### Bugfixes:
+
+* (B004) `a == False` is now correctly reduced to `not a`.
 
 ## 0.3.0
 
