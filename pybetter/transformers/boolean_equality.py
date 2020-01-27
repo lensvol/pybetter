@@ -13,12 +13,17 @@ class BooleanLiteralEqualityTransformer(NoqaAwareTransformer):
         remaining_targets: List[cst.ComparisonTarget] = []
 
         for target in original_node.comparisons:
+            if m.matches(
+                target,
+                m.ComparisonTarget(comparator=m.Name("False"), operator=m.Equal()),
+            ):
+                return cst.UnaryOperation(
+                    operator=cst.Not(), expression=original_node.left
+                )
+
             if not m.matches(
                 target,
-                m.ComparisonTarget(
-                    comparator=m.OneOf(m.Name("False"), m.Name("True")),
-                    operator=m.Equal(),
-                ),
+                m.ComparisonTarget(comparator=m.Name("True"), operator=m.Equal()),
             ):
                 remaining_targets.append(target)
 
