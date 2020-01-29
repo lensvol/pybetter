@@ -14,6 +14,6 @@ from pybetter.improvements import FixBooleanEqualityChecks
     ],
 )
 def test_boolean_equality_fix(original, expected):
-    processed = process_file(original, [FixBooleanEqualityChecks()])
+    processed, _ = process_file(original, [FixBooleanEqualityChecks()])
 
     assert processed == expected

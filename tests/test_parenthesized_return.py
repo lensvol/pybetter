@@ -25,6 +25,6 @@ def f():
     ],
 )
 def test_removal_of_parentheses_in_return(original, expected):
-    processed = process_file(original, [FixParenthesesInReturn()])
+    processed, _ = process_file(original, [FixParenthesesInReturn()])
 
     assert processed == (expected or original)

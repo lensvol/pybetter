@@ -1,5 +1,5 @@
 import difflib
-from typing import List, FrozenSet
+from typing import List, FrozenSet, Tuple
 
 import libcst as cst
 import click
@@ -47,18 +47,21 @@ def parse_improvement_codes(code_list: str) -> FrozenSet[str]:
     return codes
 
 
-def process_file(source: str, improvements: List[BaseImprovement]) -> str:
+def process_file(
+    source: str, improvements: List[BaseImprovement]
+) -> Tuple[str, List[BaseImprovement]]:
     tree: cst.Module = cst.parse_module(source)
     modified_tree: cst.Module = tree
+    improvements_applied = []
 
     for case in improvements:
         intermediate_tree = modified_tree
         modified_tree = case.improve(intermediate_tree)
 
         if not modified_tree.deep_equals(intermediate_tree):
-            print(f"  [+] ({case.CODE}) {case.DESCRIPTION}")
+            improvements_applied.append(case)
 
-    return modified_tree.code
+    return modified_tree.code, improvements_applied
 
 
 @click.group()
@@ -135,14 +138,17 @@ def main(paths, noop: bool, show_diff: bool, selected: str, excluded: str):
 
     for path_to_source in python_files:
         with open(path_to_source, "r+") as source_file:
-            print(f"--> Processing '{source_file.name}'...")
-
             original_source: str = source_file.read()
-            processed_source: str = process_file(original_source, selected_improvements)
+            processed_source, applied = process_file(
+                original_source, selected_improvements
+            )
 
             if original_source == processed_source:
-                print("  Nothing changed.")
                 continue
+
+            print(f"--> Fixing '{source_file.name}'...")
+            for case in applied:
+                print(f"  [+] ({case.CODE}) {case.DESCRIPTION}")
 
             if show_diff:
                 print()
