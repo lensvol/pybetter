@@ -1,11 +1,20 @@
 # Version history
 
+## 0.3.2 WIP
+
+* WIP
+
+  
+
 ## 0.3.1
 
 ### Bugfixes:
 
 * (B003) No longer remove parentheses from multi-line return statements.
+
 * (B004) `a == False` is now correctly reduced to `not a`.
+
+  
 
 ## 0.3.0
 
@@ -18,9 +27,10 @@
 ### Bugfixes:
 
 * Variable names and constants are now properly added to `__all__` attribute.
+
 * Small fixes in README.
 
-
+  
 
 ## 0.2.1
 
