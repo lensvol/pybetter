@@ -1,8 +1,14 @@
+from itertools import takewhile, tee, dropwhile
 from typing import Union, Dict, List
 
 import libcst as cst
+from libcst import matchers as m
 
 from pybetter.transformers.base import NoqaAwareTransformer
+
+
+def is_docstring(node):
+    return m.matches(node, m.SimpleStatementLine(body=[m.Expr(value=m.SimpleString())]))
 
 
 class ArgEmptyInitTransformer(NoqaAwareTransformer):
@@ -57,7 +63,10 @@ class ArgEmptyInitTransformer(NoqaAwareTransformer):
             for arg, init in mutable_args.items()
         ]
 
-        modified_body = (*initializations, *original_node.body.body)
+        docstrings = takewhile(is_docstring, original_node.body.body)
+        function_code = dropwhile(is_docstring, original_node.body.body)
+
+        modified_body = (*docstrings, *initializations, *function_code)
 
         return updated_node.with_changes(
             params=modified_params,
