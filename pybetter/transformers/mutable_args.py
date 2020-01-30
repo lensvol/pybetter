@@ -57,7 +57,7 @@ class ArgEmptyInitTransformer(NoqaAwareTransformer):
                             ]
                         )
                     ],
-                    footer=[cst.EmptyLine(newline=cst.Newline(value=None))],
+                    footer=[cst.EmptyLine(indent=False)],
                 ),
             )
             for arg, init in mutable_args.items()
