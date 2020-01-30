@@ -1,74 +1,57 @@
-import typing
-from typing import Union
+from typing import Union, Dict, List
 
-from libcst import (
-    FunctionDef,
-    RemovalSentinel,
-    List,
-    Name,
-    Dict,
-    SimpleStatementLine,
-    Assign,
-    AssignTarget,
-    If,
-    ComparisonTarget,
-    Comparison,
-    Is,
-    Newline,
-    IndentedBlock,
-    BaseStatement,
-    EmptyLine,
-    Parameters,
-)
+import libcst as cst
 
 from pybetter.transformers.base import NoqaAwareTransformer
 
 
 class ArgEmptyInitTransformer(NoqaAwareTransformer):
     def leave_FunctionDef(
-        self, original_node: FunctionDef, updated_node: FunctionDef
-    ) -> Union[BaseStatement, RemovalSentinel]:
-        modified_defaults: typing.List = []
-        mutable_args: typing.Dict[Name, Union[List, Dict]] = {}
+        self, original_node: cst.FunctionDef, updated_node: cst.FunctionDef
+    ) -> Union[cst.BaseStatement, cst.RemovalSentinel]:
+        modified_defaults: List = []
+        mutable_args: Dict[cst.Name, Union[cst.List, cst.Dict]] = {}
 
         for default_param in original_node.params.params:
-            if isinstance(default_param.default, (List, Dict)):
+            if isinstance(default_param.default, (cst.List, cst.Dict)):
                 mutable_args[default_param.name] = default_param.default.deep_clone()
                 modified_defaults.append(
-                    default_param.with_changes(default=Name("None"))
+                    default_param.with_changes(default=cst.Name("None"))
                 )
             else:
                 modified_defaults.append(default_param)
 
-        modified_params: Parameters = original_node.params.with_changes(
+        modified_params: cst.Parameters = original_node.params.with_changes(
             params=modified_defaults
         )
 
-        initializations: typing.List[If] = [
-            If(
-                test=Comparison(
-                    left=Name(value=arg.value, lpar=[], rpar=[]),
+        initializations: List[cst.If] = [
+            cst.If(
+                test=cst.Comparison(
+                    left=cst.Name(value=arg.value, lpar=[], rpar=[]),
                     comparisons=[
-                        ComparisonTarget(
-                            operator=Is(),
-                            comparator=Name(value="None", lpar=[], rpar=[]),
+                        cst.ComparisonTarget(
+                            operator=cst.Is(),
+                            comparator=cst.Name(value="None", lpar=[], rpar=[]),
                         )
                     ],
                 ),
-                body=IndentedBlock(
+                body=cst.IndentedBlock(
                     body=[
-                        SimpleStatementLine(
+                        cst.SimpleStatementLine(
                             body=[
-                                Assign(
+                                cst.Assign(
                                     targets=[
-                                        AssignTarget(target=Name(value=arg.value))
+                                        cst.AssignTarget(
+                                            target=cst.Name(value=arg.value)
+                                        )
                                     ],
                                     value=init,
                                 )
                             ]
                         )
                     ],
-                    footer=[EmptyLine(newline=Newline(value=None))],
+                    footer=[cst.EmptyLine(newline=cst.Newline(value=None))],
                 ),
             )
             for arg, init in mutable_args.items()
