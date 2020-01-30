@@ -1,10 +1,17 @@
 # Version history
 
-## 0.3.2 WIP
+## 0.3.2
 
-* WIP
+### Bugfixes:
 
-  
+* (B002) Fix issue when new inits were added before docstrings.
+* (B002) Remove unneeded indent after generated initializations.
+
+### Misc:
+
+* Nothing is displayed if no changes were made to the file.
+
+
 
 ## 0.3.1
 
