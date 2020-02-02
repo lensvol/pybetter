@@ -1,4 +1,5 @@
 import difflib
+import time
 from typing import List, FrozenSet, Tuple
 
 import libcst as cst
@@ -146,9 +147,12 @@ def main(paths, noop: bool, show_diff: bool, selected: str, excluded: str):
     for path_to_source in python_files:
         with open(path_to_source, "r+") as source_file:
             original_source: str = source_file.read()
+
+            start_ts = time.process_time()
             processed_source, applied = process_file(
                 original_source, selected_improvements
             )
+            end_ts = time.process_time()
 
             if original_source == processed_source:
                 continue
@@ -156,6 +160,8 @@ def main(paths, noop: bool, show_diff: bool, selected: str, excluded: str):
             print(f"--> Fixing '{source_file.name}'...")
             for case in applied:
                 print(f"  [+] ({case.CODE}) {case.DESCRIPTION}")
+            print()
+            print(f"  Time taken: {end_ts - start_ts:.2f} seconds")
 
             if show_diff:
                 print()
