@@ -8,7 +8,7 @@
 
 * Use `pygments` for highlighting of diffs.
 
-
+* Output time taken to apply selected transformations.
 
 ## 0.3.2
 
