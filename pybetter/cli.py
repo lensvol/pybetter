@@ -4,6 +4,9 @@ from typing import List, FrozenSet, Tuple
 import libcst as cst
 import click
 from pyemojify import emojify
+from pygments import highlight
+from pygments.formatters.terminal256 import Terminal256Formatter
+from pygments.lexers.diff import DiffLexer
 
 from pybetter.improvements import (
     FixNotInConditionOrder,
@@ -26,6 +29,10 @@ ALL_IMPROVEMENTS: List[BaseImprovement] = [
     FixBooleanEqualityChecks(),
     FixTrivialFmtStringCreation(),
 ]
+
+
+diff_lexer = DiffLexer()
+term256_formatter = Terminal256Formatter()
 
 
 def parse_improvement_codes(code_list: str) -> FrozenSet[str]:
@@ -152,16 +159,7 @@ def main(paths, noop: bool, show_diff: bool, selected: str, excluded: str):
 
             if show_diff:
                 print()
-                print(
-                    "".join(
-                        difflib.unified_diff(
-                            original_source.splitlines(keepends=True),
-                            processed_source.splitlines(keepends=True),
-                            fromfile=source_file.name,
-                            tofile=source_file.name,
-                        )
-                    )
-                )
+                print(create_diff(original_source, processed_source, source_file.name))
 
             if noop:
                 continue
@@ -173,3 +171,16 @@ def main(paths, noop: bool, show_diff: bool, selected: str, excluded: str):
             print()
 
     print(emojify(":sparkles: All done! :sparkles:"))
+
+
+def create_diff(original_source: str, processed_source: str, source_file: str) -> str:
+    diff_text = "".join(
+        difflib.unified_diff(
+            original_source.splitlines(keepends=True),
+            processed_source.splitlines(keepends=True),
+            fromfile=source_file,
+            tofile=source_file,
+        )
+    )
+
+    return highlight(diff_text, diff_lexer, term256_formatter)

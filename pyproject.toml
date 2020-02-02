@@ -29,6 +29,7 @@ python = "^3.6"
 libcst = "^0.2.6"
 click = "^7.0"
 pyemojify = "^0.2.0"
+pygments = "^2.5.2"
 
 [tool.poetry.dev-dependencies]
 ipdb = "^0.12.3"
