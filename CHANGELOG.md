@@ -1,5 +1,15 @@
 # Version history
 
+
+
+## 0.3.3 WIP
+
+### Misc:
+
+* Use `pygments` for highlighting of diffs.
+
+
+
 ## 0.3.2
 
 ### Bugfixes:
