@@ -18,6 +18,7 @@ from pybetter.improvements import (
     FixEqualsNone,
     FixBooleanEqualityChecks,
     FixTrivialFmtStringCreation,
+    FixTrivialNestedWiths,
 )
 from pybetter.utils import resolve_paths
 
@@ -29,6 +30,7 @@ ALL_IMPROVEMENTS: List[BaseImprovement] = [
     FixEqualsNone(),
     FixBooleanEqualityChecks(),
     FixTrivialFmtStringCreation(),
+    FixTrivialNestedWiths(),
 ]
 
 

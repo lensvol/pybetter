@@ -10,6 +10,7 @@ from pybetter.transformers.boolean_equality import BooleanLiteralEqualityTransfo
 from pybetter.transformers.empty_fstring import TrivialFmtStringTransformer
 from pybetter.transformers.equals_none import EqualsNoneIsNoneTransformer
 from pybetter.transformers.mutable_args import ArgEmptyInitTransformer
+from pybetter.transformers.nested_withs import NestedWithTransformer
 from pybetter.transformers.not_in import NotInConditionTransformer
 from pybetter.transformers.parenthesized_return import RemoveParenthesesFromReturn
 
@@ -77,3 +78,10 @@ class FixTrivialFmtStringCreation(BaseImprovement):
     DESCRIPTION = "Convert f-strings without expressions into regular strings."
     CODE = "B007"
     TRANSFORMER = TrivialFmtStringTransformer
+
+
+class FixTrivialNestedWiths(BaseImprovement):
+    NAME = "nested_withs"
+    DESCRIPTION = "Replace nested 'with' statements with a compound one."
+    CODE = "B008"
+    TRANSFORMER = NestedWithTransformer
