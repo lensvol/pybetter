@@ -172,6 +172,24 @@ def f():
   a = "Hello, world"
   ```
 
+* **B008: Collapse nested `with` statements**
+
+  Degenerate `with` statements can be rewritten as a single compound `with` statement, if following conditions are satisfied:
+
+  * There are no statements between `with` statements being collapsed;
+  * Neither of `with` statements has any leading or inline comments.
+
+  ```python
+  # BEFORE:
+  with a():
+      with b() as other_b:
+          print("Hello, world!")
+
+  # AFTER:
+  with a(), b() as other_b:
+      print("Hello, world!")
+  ```
+
 
 
 **NB:** Each of the fixers can be disabled on per-line basis using [flake8's "noqa" comments](http://flake8.pycqa.org/en/3.1.1/user/ignoring-errors.html#in-line-ignoring-errors).

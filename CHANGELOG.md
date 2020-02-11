@@ -7,8 +7,12 @@
 ### Misc:
 
 * Use `pygments` for highlighting of diffs.
-
 * Output time taken to apply selected transformations.
+
+### Features:
+
+* New "improvements" added:
+  * **B008: Replace nested 'with' statements with a compound one.**
 
 ## 0.3.2
 

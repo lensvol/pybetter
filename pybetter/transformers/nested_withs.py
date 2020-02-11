@@ -2,52 +2,77 @@ from typing import Union, List
 
 import libcst as cst
 import libcst.matchers as m
-from libcst.metadata import PositionProvider
 
 from pybetter.transformers.base import NoqaAwareTransformer
 
 
+def has_leading_comment(node: Union[cst.SimpleStatementLine, cst.With]) -> bool:
+    return any([line.comment is not None for line in node.leading_lines])
+
+
+def has_inline_comment(node: cst.BaseSuite):
+    return m.matches(
+        node,
+        m.IndentedBlock(
+            header=m.AllOf(
+                m.TrailingWhitespace(), m.MatchIfTrue(lambda h: h.comment is not None),
+            )
+        ),
+    )
+
+
+def has_footer_comment(body):
+    return m.matches(
+        body,
+        m.IndentedBlock(
+            footer=[m.ZeroOrMore(), m.EmptyLine(comment=m.Comment()), m.ZeroOrMore(),]
+        ),
+    )
+
+
 class NestedWithTransformer(NoqaAwareTransformer):
-    def has_leading_comment(
-        self, node: Union[cst.SimpleStatementLine, cst.With]
-    ) -> bool:
-        return any([line.comment is not None for line in node.leading_lines])
-
-    def has_comment(self, node: cst.BaseSuite):
-        return m.matches(
-            node,
-            m.IndentedBlock(
-                header=m.AllOf(
-                    m.TrailingWhitespace(),
-                    m.MatchIfTrue(lambda h: h.comment is not None),
-                )
-            ),
-        )
-
     def leave_With(
         self, original_node: cst.With, updated_node: cst.With
     ) -> Union[cst.BaseStatement, cst.RemovalSentinel]:
 
         candidate_with: cst.With = original_node
         compound_items: List[cst.WithItem] = []
-        final_body: BaseSuite = None
+        final_body: cst.BaseSuite = candidate_with.body
 
         while True:
-            if self.has_leading_comment(candidate_with):
+            # There is no way to meaningfully represent comments inside
+            # multi-line `with` statements due to how Python grammar is
+            # written, so we do not try to transform such `with` statements
+            # lest we lose something important in the comments.
+            if has_leading_comment(candidate_with):
                 break
 
-            if self.has_comment(candidate_with.body):
+            if has_inline_comment(candidate_with.body):
                 break
 
             compound_items.extend(candidate_with.items)
             final_body = candidate_with.body
 
-            if not isinstance(candidate_with.body.body[0], cst.With):
+            if not isinstance(final_body.body[0], cst.With):
+                break
+
+            if len(final_body.body) > 1:
                 break
 
             candidate_with = cst.ensure_type(candidate_with.body.body[0], cst.With)
 
-        if not compound_items:
+        if len(compound_items) <= 1:
             return original_node
+
+        if all(
+            [
+                isinstance(final_body, cst.IndentedBlock),
+                has_footer_comment(original_node.body),
+                not has_footer_comment(final_body),
+            ]
+        ):
+            final_body = final_body.with_changes(
+                footer=final_body.footer + original_node.body.footer
+            )
 
         return updated_node.with_changes(body=final_body, items=compound_items)
