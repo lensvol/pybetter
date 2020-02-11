@@ -3,6 +3,7 @@ from typing import Union, Dict, List
 
 import libcst as cst
 from libcst import matchers as m
+from libcst.helpers import parse_template_statement
 
 from pybetter.transformers.base import NoqaAwareTransformer
 
@@ -31,34 +32,14 @@ class ArgEmptyInitTransformer(NoqaAwareTransformer):
             params=modified_defaults
         )
 
-        initializations: List[cst.If] = [
-            cst.If(
-                test=cst.Comparison(
-                    left=cst.Name(value=arg.value, lpar=[], rpar=[]),
-                    comparisons=[
-                        cst.ComparisonTarget(
-                            operator=cst.Is(),
-                            comparator=cst.Name(value="None", lpar=[], rpar=[]),
-                        )
-                    ],
-                ),
-                body=cst.IndentedBlock(
-                    body=[
-                        cst.SimpleStatementLine(
-                            body=[
-                                cst.Assign(
-                                    targets=[
-                                        cst.AssignTarget(
-                                            target=cst.Name(value=arg.value)
-                                        )
-                                    ],
-                                    value=init,
-                                )
-                            ]
-                        )
-                    ],
-                    footer=[cst.EmptyLine(indent=False)],
-                ),
+        initializations: List[cst.SimpleStatementLine] = [
+            parse_template_statement(
+                """
+if {arg} is None:
+    {arg} = {init}
+""",
+                arg=arg,
+                init=init,
             )
             for arg, init in mutable_args.items()
         ]
