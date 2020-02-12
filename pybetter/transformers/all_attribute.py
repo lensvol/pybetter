@@ -26,10 +26,11 @@ class AllAttributeTransformer(NoqaAwareTransformer):
 
     def visit_AssignTarget(self, node: cst.AssignTarget) -> Optional[bool]:
         if m.matches(node, m.AssignTarget(target=m.Name())):
-            if node.target.value == "__all__":
+            target = cst.ensure_type(node.target, cst.Name)
+            if target.value == "__all__":
                 self.already_exists = True
             else:
-                self.process_node(node.target, node.target.value)
+                self.process_node(node.target, target.value)
         return None
 
     def visit_FunctionDef(self, node: cst.FunctionDef) -> Optional[bool]:

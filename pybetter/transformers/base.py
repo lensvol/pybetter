@@ -23,7 +23,7 @@ class NoqaDetectionVisitor(cst.CSTVisitor):
         m = re.search(NOQA_MARKUP_REGEX, node.value)
         if m:
             codes = m.group(1)
-            position: cst.CodeRange = self.get_metadata(PositionProvider, node)
+            position: cst.metadata.CodeRange = self.get_metadata(PositionProvider, node)
             if codes:
                 self._line_to_code[position.start.line] = frozenset(codes.split(","))
             else:
@@ -55,7 +55,7 @@ class NoqaAwareTransformer(
         super().__init__()
 
     def on_visit(self, node: cst.CSTNode):
-        position: cst.CodeRange = self.get_metadata(PositionProvider, node)
+        position: cst.metadata.CodeRange = self.get_metadata(PositionProvider, node)
         applicable_noqa: FrozenSet[str] = self.noqa_lines.get(
             position.start.line, frozenset()
         )

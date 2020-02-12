@@ -20,7 +20,9 @@ class RemoveParenthesesFromReturn(NoqaAwareTransformer):
 
         # We get position of the `original_node`, since `updated_node` is
         # by definition different and was not processed by metadata provider.
-        position: cst.CodeRange = self.get_metadata(PositionProvider, original_node)
+        position: cst.metadata.CodeRange = self.get_metadata(
+            PositionProvider, original_node
+        )
 
         # Removing parentheses which are used to enable multi-line expression
         # will lead to invalid code, so we do nothing.

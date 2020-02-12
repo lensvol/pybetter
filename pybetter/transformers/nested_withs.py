@@ -64,15 +64,12 @@ class NestedWithTransformer(NoqaAwareTransformer):
         if len(compound_items) <= 1:
             return original_node
 
-        if all(
-            [
-                isinstance(final_body, cst.IndentedBlock),
-                has_footer_comment(original_node.body),
-                not has_footer_comment(final_body),
-            ]
-        ):
+        final_body = cst.ensure_type(final_body, cst.IndentedBlock)
+        topmost_body = cst.ensure_type(original_node.body, cst.IndentedBlock)
+
+        if has_footer_comment(topmost_body) and not has_footer_comment(final_body):
             final_body = final_body.with_changes(
-                footer=final_body.footer + original_node.body.footer
+                footer=(*final_body.footer, *topmost_body.footer)
             )
 
         return updated_node.with_changes(body=final_body, items=compound_items)
