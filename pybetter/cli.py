@@ -146,6 +146,7 @@ def main(paths, noop: bool, show_diff: bool, selected: str, excluded: str):
 
     python_files = filter(lambda fn: fn.endswith(".py"), resolve_paths(*paths))
 
+    total_start_ts = time.process_time()
     for path_to_source in python_files:
         with open(path_to_source, "r+") as source_file:
             original_source: str = source_file.read()
@@ -159,7 +160,7 @@ def main(paths, noop: bool, show_diff: bool, selected: str, excluded: str):
             if original_source == processed_source:
                 continue
 
-            print(f"--> Fixing '{source_file.name}'...")
+            print(f"--> Fixed '{source_file.name}'...")
             for case in applied:
                 print(f"  [+] ({case.CODE}) {case.DESCRIPTION}")
             print()
@@ -177,8 +178,9 @@ def main(paths, noop: bool, show_diff: bool, selected: str, excluded: str):
             source_file.write(processed_source)
 
             print()
+    time_taken = time.process_time() - total_start_ts
 
-    print(emojify(":sparkles: All done! :sparkles:"))
+    print(emojify(f":sparkles: All done! :sparkles: (:clock2: {time_taken:.2f} sec) "))
 
 
 def create_diff(original_source: str, processed_source: str, source_file: str) -> str:

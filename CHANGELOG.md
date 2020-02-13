@@ -8,6 +8,7 @@
 
 * Use `pygments` for highlighting of diffs.
 * Output time taken to apply selected transformations.
+* Output total time taken to process all files in provided paths.
 
 ### Features:
 
