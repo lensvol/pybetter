@@ -98,6 +98,14 @@ REGULAR_LIST_ARGUMENTS_ARE_UNCHANGED = (
 )
 
 
+COMPLEX_LIST_ARGUMENTS_ARE_UNCHANGED = (
+    """
+    {frozenset(set([func([1, 2, 3])]))}
+    """,
+    NO_CHANGES_MADE,
+)
+
+
 NESTED_SETS_ARE_PROCESSED = (
     """
     {
@@ -131,6 +139,7 @@ NESTED_SETS_ARE_PROCESSED = (
         NESTED_LIST_LITERAL,
         TUPLES_ARE_UNCHANGED,
         NESTED_SETS_ARE_PROCESSED,
+        COMPLEX_LIST_ARGUMENTS_ARE_UNCHANGED,
     ],
 )
 def test_replacement_of_list_literal_in_sets(original, expected):
