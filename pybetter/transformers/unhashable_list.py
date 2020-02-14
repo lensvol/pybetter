@@ -1,4 +1,4 @@
-from typing import List, Sequence
+from typing import List, Sequence, Union
 
 import libcst as cst
 from libcst import matchers as m
@@ -28,24 +28,16 @@ def convert_lists_to_tuples(
 
 
 class UnhashableListTransformer(NoqaAwareTransformer, m.MatcherDecoratableTransformer):
-    def leave_Set(
-        self, original_node: cst.Set, updated_node: cst.Set
-    ) -> cst.BaseExpression:
-
-        return updated_node.with_changes(
-            elements=convert_lists_to_tuples(updated_node.elements)
-        )
-
     @m.call_if_inside(
         m.Call(
             func=m.OneOf(m.Name(value="set"), m.Name(value="frozenset")),
             args=[m.Arg(value=m.OneOf(m.List(), m.Tuple(), m.Set()))],
         )
+        | m.Set()
     )
-    def leave_Call(
-        self, original_node: cst.Call, updated_node: cst.Call
+    @m.leave(m.List() | m.Set() | m.Tuple())
+    def convert_list_arg(
+        self, _, updated_node: Union[cst.Set, cst.List, cst.Tuple],
     ) -> cst.BaseExpression:
-        modified_elements = convert_lists_to_tuples(updated_node.args[0].value.elements)  # type: ignore
-        return updated_node.with_deep_changes(
-            updated_node.args[0].value, elements=modified_elements
-        )
+        modified_elements = convert_lists_to_tuples(updated_node.elements)
+        return updated_node.with_changes(elements=modified_elements)
