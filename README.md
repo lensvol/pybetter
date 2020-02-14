@@ -190,6 +190,26 @@ def f():
       print("Hello, world!")
   ```
 
+* **B009: Replace unhashable list literals in set constructors**
+
+  Lists cannot be used as elements of the sets due to them being mutable and hence "unhashable". We can fix the more trivial cases of list literals being used to create a set by converting them into tuples.
+
+  ```python
+  # BEFORE:
+  a = {
+    [1, 2, 3],
+  }
+  b = set([[1, 2], ["a", "b"]])
+  c = frozenset([[1, 2], ["a", "b"]])
+
+  # AFTER:
+  a = {
+    (1, 2, 3)
+  }
+  b = set([(1, 2), ("a", "b")])
+  c = frozenset([(1, 2), ("a", "b")])
+  ```
+
 
 
 **NB:** Each of the fixers can be disabled on per-line basis using [flake8's "noqa" comments](http://flake8.pycqa.org/en/3.1.1/user/ignoring-errors.html#in-line-ignoring-errors).

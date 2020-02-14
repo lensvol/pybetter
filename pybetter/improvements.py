@@ -13,6 +13,7 @@ from pybetter.transformers.mutable_args import ArgEmptyInitTransformer
 from pybetter.transformers.nested_withs import NestedWithTransformer
 from pybetter.transformers.not_in import NotInConditionTransformer
 from pybetter.transformers.parenthesized_return import RemoveParenthesesFromReturn
+from pybetter.transformers.unhashable_list import UnhashableListTransformer
 
 
 class BaseImprovement(ABC):
@@ -85,3 +86,10 @@ class FixTrivialNestedWiths(BaseImprovement):
     DESCRIPTION = "Replace nested 'with' statements with a compound one."
     CODE = "B008"
     TRANSFORMER = NestedWithTransformer
+
+
+class FixUnhashableList(BaseImprovement):
+    NAME = "unhashable_list"
+    DESCRIPTION = "Replace unhashable list literals in sets with tuples."
+    CODE = "B009"
+    TRANSFORMER = UnhashableListTransformer

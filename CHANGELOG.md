@@ -14,6 +14,7 @@
 
 * New "improvements" added:
   * **B008: Replace nested 'with' statements with a compound one.**
+  * **B009: Replace unhashable list literals in set constructors**
 
 ## 0.3.2
 
