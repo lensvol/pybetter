@@ -16,12 +16,12 @@ class EqualsNoneIsNoneTransformer(NoqaAwareTransformer):
         ):
             return original_node
 
+        original_op = cst.ensure_type(original_node.operator, cst.Equal)
+
         return updated_node.with_changes(
             operator=cst.Is(
-                # For some reason, mypy cannot understand that operator is cst.Equal,
-                # even with explicit direction by cst.ensure_type :/
-                whitespace_after=updated_node.operator.whitespace_after,  # type: ignore
-                whitespace_before=updated_node.operator.whitespace_before,  # type: ignore
+                whitespace_after=original_op.whitespace_after,
+                whitespace_before=original_op.whitespace_before,
             )
         )
 
