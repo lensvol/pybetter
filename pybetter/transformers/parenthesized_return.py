@@ -34,3 +34,6 @@ class RemoveParenthesesFromReturn(NoqaAwareTransformer):
         )
 
         return updated_node.with_changes(value=changed_tuple)
+
+
+__all__ = ["RemoveParenthesesFromReturn"]

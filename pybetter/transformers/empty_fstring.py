@@ -17,3 +17,6 @@ class TrivialFmtStringTransformer(NoqaAwareTransformer):
             return cst.SimpleString(value=f'"{updated_node.parts[0].value}"')
 
         return original_node
+
+
+__all__ = ["TrivialFmtStringTransformer"]

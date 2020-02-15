@@ -93,3 +93,17 @@ class FixUnhashableList(BaseImprovement):
     DESCRIPTION = "Replace unhashable list literals in sets with tuples."
     CODE = "B009"
     TRANSFORMER = UnhashableListTransformer
+
+
+__all__ = [
+    "BaseImprovement",
+    "FixBooleanEqualityChecks",
+    "FixEqualsNone",
+    "FixMissingAllAttribute",
+    "FixMutableDefaultArgs",
+    "FixNotInConditionOrder",
+    "FixParenthesesInReturn",
+    "FixTrivialFmtStringCreation",
+    "FixTrivialNestedWiths",
+    "FixUnhashableList",
+]

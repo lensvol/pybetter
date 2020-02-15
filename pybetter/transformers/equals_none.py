@@ -24,3 +24,6 @@ class EqualsNoneIsNoneTransformer(NoqaAwareTransformer):
                 whitespace_before=updated_node.operator.whitespace_before,  # type: ignore
             )
         )
+
+
+__all__ = ["EqualsNoneIsNoneTransformer"]

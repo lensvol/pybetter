@@ -33,3 +33,6 @@ class NotInConditionTransformer(NoqaAwareTransformer):
                 fixed_comparisons.append(target)
 
         return cst.Comparison(left=comparison_node.left, comparisons=fixed_comparisons)
+
+
+__all__ = ["NotInConditionTransformer"]

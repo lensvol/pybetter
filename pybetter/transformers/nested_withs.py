@@ -15,7 +15,7 @@ def has_inline_comment(node: cst.BaseSuite):
         node,
         m.IndentedBlock(
             header=m.AllOf(
-                m.TrailingWhitespace(), m.MatchIfTrue(lambda h: h.comment is not None),
+                m.TrailingWhitespace(), m.MatchIfTrue(lambda h: h.comment is not None)
             )
         ),
     )
@@ -25,7 +25,7 @@ def has_footer_comment(body):
     return m.matches(
         body,
         m.IndentedBlock(
-            footer=[m.ZeroOrMore(), m.EmptyLine(comment=m.Comment()), m.ZeroOrMore(),]
+            footer=[m.ZeroOrMore(), m.EmptyLine(comment=m.Comment()), m.ZeroOrMore()]
         ),
     )
 
@@ -73,3 +73,6 @@ class NestedWithTransformer(NoqaAwareTransformer):
             )
 
         return updated_node.with_changes(body=final_body, items=compound_items)
+
+
+__all__ = ["NestedWithTransformer"]

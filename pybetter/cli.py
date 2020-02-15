@@ -143,7 +143,7 @@ def main(paths, noop: bool, show_diff: bool, selected: str, excluded: str):
         ]
 
     if not selected_improvements:
-        print(emojify(f":sleeping: No improvements to apply."))
+        print(emojify(":sleeping: No improvements to apply."))
         return
 
     python_files = filter(lambda fn: fn.endswith(".py"), resolve_paths(*paths))
@@ -196,3 +196,6 @@ def create_diff(original_source: str, processed_source: str, source_file: str) -
     )
 
     return highlight(diff_text, diff_lexer, term256_formatter)
+
+
+__all__ = ["main"]

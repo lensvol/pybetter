@@ -37,7 +37,10 @@ class UnhashableListTransformer(NoqaAwareTransformer, m.MatcherDecoratableTransf
     )
     @m.leave(m.List() | m.Set() | m.Tuple())
     def convert_list_arg(
-        self, _, updated_node: Union[cst.Set, cst.List, cst.Tuple],
+        self, _, updated_node: Union[cst.Set, cst.List, cst.Tuple]
     ) -> cst.BaseExpression:
         modified_elements = convert_lists_to_tuples(updated_node.elements)
         return updated_node.with_changes(elements=modified_elements)
+
+
+__all__ = ["UnhashableListTransformer"]

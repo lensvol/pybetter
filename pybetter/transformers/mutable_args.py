@@ -50,7 +50,7 @@ class ArgEmptyInitTransformer(NoqaAwareTransformer):
             Union[cst.SimpleStatementLine, cst.BaseCompoundStatement]
         ] = [
             parse_template_statement(
-                DEFAULT_INIT_TEMPLATE, config=self.module_config, arg=arg, init=init,
+                DEFAULT_INIT_TEMPLATE, config=self.module_config, arg=arg, init=init
             )
             for arg, init in mutable_args.items()
         ]
@@ -64,3 +64,6 @@ class ArgEmptyInitTransformer(NoqaAwareTransformer):
             params=modified_params,
             body=original_node.body.with_changes(body=modified_body),
         )
+
+
+__all__ = ["ArgEmptyInitTransformer"]

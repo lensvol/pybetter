@@ -12,3 +12,6 @@ def resolve_paths(*paths):
             for dirpath, dirnames, filenames in os.walk(path):
                 for fn in filenames:
                     yield os.path.abspath(os.path.join(dirpath, fn))
+
+
+__all__ = ["resolve_paths"]

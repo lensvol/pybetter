@@ -34,3 +34,6 @@ class BooleanLiteralEqualityTransformer(NoqaAwareTransformer):
             return original_node.left
 
         return updated_node.with_changes(comparisons=remaining_targets)
+
+
+__all__ = ["BooleanLiteralEqualityTransformer"]

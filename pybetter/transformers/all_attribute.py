@@ -66,3 +66,6 @@ __all__ = [
 
         modified_body.append(all_names)
         return updated_node.with_changes(body=modified_body)
+
+
+__all__ = ["AllAttributeTransformer"]
