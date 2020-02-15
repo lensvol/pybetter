@@ -198,4 +198,4 @@ def create_diff(original_source: str, processed_source: str, source_file: str) -
     return highlight(diff_text, diff_lexer, term256_formatter)
 
 
-__all__ = ["main"]
+__all__ = ["main", "process_file"]
