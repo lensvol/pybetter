@@ -6,17 +6,14 @@ from libcst import matchers as m
 from pybetter.transformers.base import NoqaAwareTransformer
 
 
-class EqualsNoneIsNoneTransformer(NoqaAwareTransformer):
-    def leave_ComparisonTarget(
-        self, original_node: cst.ComparisonTarget, updated_node: cst.ComparisonTarget
+class EqualsNoneIsNoneTransformer(
+    NoqaAwareTransformer, m.MatcherDecoratableTransformer
+):
+    @m.leave(m.ComparisonTarget(comparator=m.Name(value="None"), operator=m.Equal()))
+    def convert_none_cmp(
+        self, _, updated_node: cst.ComparisonTarget
     ) -> Union[cst.ComparisonTarget, cst.RemovalSentinel]:
-        if not m.matches(
-            updated_node,
-            m.ComparisonTarget(comparator=m.Name(value="None"), operator=m.Equal()),
-        ):
-            return original_node
-
-        original_op = cst.ensure_type(original_node.operator, cst.Equal)
+        original_op = cst.ensure_type(updated_node.operator, cst.Equal)
 
         return updated_node.with_changes(
             operator=cst.Is(
