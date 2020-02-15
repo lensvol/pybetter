@@ -6,17 +6,11 @@ from pybetter.transformers.base import NoqaAwareTransformer
 
 
 class RemoveParenthesesFromReturn(NoqaAwareTransformer):
-    def leave_Return(
-        self, original_node: cst.Return, updated_node: cst.Return
-    ) -> cst.Return:
-        if updated_node.value is None:
-            return original_node
-
-        if not m.matches(updated_node.value, m.Tuple()):
-            return original_node
-
-        if not updated_node.value.lpar:
-            return original_node
+    @m.call_if_inside(m.Return())
+    @m.leave(m.Tuple(lpar=m.MatchIfTrue(lambda v: v is not None)))
+    def remove_parentheses_from_return(
+        self, original_node: cst.Tuple, updated_node: cst.Tuple
+    ) -> cst.Tuple:
 
         # We get position of the `original_node`, since `updated_node` is
         # by definition different and was not processed by metadata provider.
@@ -29,11 +23,7 @@ class RemoveParenthesesFromReturn(NoqaAwareTransformer):
         if position.start.line != position.end.line:
             return original_node
 
-        changed_tuple: cst.BaseExpression = updated_node.value.with_changes(
-            lpar=[], rpar=[]
-        )
-
-        return updated_node.with_changes(value=changed_tuple)
+        return updated_node.with_changes(lpar=[], rpar=[])
 
 
 __all__ = ["RemoveParenthesesFromReturn"]

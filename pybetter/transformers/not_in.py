@@ -7,20 +7,15 @@ from pybetter.transformers.base import NoqaAwareTransformer
 
 
 class NotInConditionTransformer(NoqaAwareTransformer):
-    def leave_UnaryOperation(
-        self, original_node: cst.UnaryOperation, updated_node: cst.UnaryOperation
+    @m.leave(
+        m.UnaryOperation(
+            operator=m.Not(),
+            expression=m.Comparison(comparisons=[m.ComparisonTarget(operator=m.In())]),
+        )
+    )
+    def replace_not_in_condition(
+        self, original_node: cst.UnaryOperation, _
     ) -> cst.BaseExpression:
-        if not m.matches(
-            original_node,
-            m.UnaryOperation(
-                operator=m.Not(),
-                expression=m.Comparison(
-                    comparisons=[m.ComparisonTarget(operator=m.In())]
-                ),
-            ),
-        ):
-            return original_node
-
         fixed_comparisons: List[cst.ComparisonTarget] = []
         comparison_node: cst.Comparison = cst.ensure_type(
             original_node.expression, cst.Comparison
@@ -32,6 +27,7 @@ class NotInConditionTransformer(NoqaAwareTransformer):
             else:
                 fixed_comparisons.append(target)
 
+        # FIXME: For some reason, new node is discarded when doing nested fixes.
         return cst.Comparison(left=comparison_node.left, comparisons=fixed_comparisons)
 
 
