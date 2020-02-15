@@ -5,7 +5,7 @@ from typing import Dict, Optional, FrozenSet
 import libcst as cst
 from libcst.metadata import PositionProvider
 
-NOQA_MARKUP_REGEX = re.compile(r"noqa(?:: ((?:B[0-9]{3},)+(?:B[0-9]{3})))?")
+NOQA_MARKUP_REGEX = re.compile(r"noqa(?:: ((?:B[0-9]{3},)+(?:B[0-9]{3})|(B[0-9]{3})))?")
 NOQA_CATCHALL: str = "B999"
 
 NoqaLineMapping = Dict[int, FrozenSet[str]]
@@ -59,6 +59,7 @@ class NoqaAwareTransformer(
         applicable_noqa: FrozenSet[str] = self.noqa_lines.get(
             position.start.line, frozenset()
         )
+
         if self.check_code in applicable_noqa or NOQA_CATCHALL in applicable_noqa:
             return False
 

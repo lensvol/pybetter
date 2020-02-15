@@ -4,6 +4,10 @@
 
 ## 0.3.3 WIP
 
+### Bugfixes:
+
+* Fix issue with `noqa` directive with one argument being treated as `noqa` without any arguments.
+
 ### Misc:
 
 * Use `pygments` for highlighting of diffs.
