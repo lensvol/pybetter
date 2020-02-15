@@ -6,9 +6,7 @@ from libcst import matchers as m
 from pybetter.transformers.base import NoqaAwareTransformer
 
 
-class EqualsNoneIsNoneTransformer(
-    NoqaAwareTransformer, m.MatcherDecoratableTransformer
-):
+class EqualsNoneIsNoneTransformer(NoqaAwareTransformer):
     @m.leave(m.ComparisonTarget(comparator=m.Name(value="None"), operator=m.Equal()))
     def convert_none_cmp(
         self, _, updated_node: cst.ComparisonTarget

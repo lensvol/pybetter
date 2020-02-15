@@ -3,6 +3,7 @@ from abc import ABCMeta
 from typing import Dict, Optional, FrozenSet
 
 import libcst as cst
+from libcst.matchers import MatcherDecoratableTransformer
 from libcst.metadata import PositionProvider
 
 NOQA_MARKUP_REGEX = re.compile(r"noqa(?:: ((?:B[0-9]{3},)+(?:B[0-9]{3})|(B[0-9]{3})))?")
@@ -45,7 +46,7 @@ class PositionProviderEnsuranceMetaclass(ABCMeta):
 
 
 class NoqaAwareTransformer(
-    cst.CSTTransformer, metaclass=PositionProviderEnsuranceMetaclass
+    MatcherDecoratableTransformer, metaclass=PositionProviderEnsuranceMetaclass
 ):
     METADATA_DEPENDENCIES = (PositionProvider,)  # type: ignore
 

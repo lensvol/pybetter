@@ -27,7 +27,7 @@ def convert_lists_to_tuples(
     return result
 
 
-class UnhashableListTransformer(NoqaAwareTransformer, m.MatcherDecoratableTransformer):
+class UnhashableListTransformer(NoqaAwareTransformer):
     @m.call_if_inside(
         m.Call(
             func=m.OneOf(m.Name(value="set"), m.Name(value="frozenset")),
