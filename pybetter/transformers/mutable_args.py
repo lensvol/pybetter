@@ -1,4 +1,4 @@
-from itertools import takewhile, tee, dropwhile
+from itertools import takewhile, dropwhile
 from typing import Union, Dict, List, Optional
 
 import libcst as cst
@@ -6,7 +6,6 @@ from libcst import matchers as m
 from libcst.helpers import parse_template_statement
 
 from pybetter.transformers.base import NoqaAwareTransformer
-
 
 DEFAULT_INIT_TEMPLATE = """
 if {arg} is None:
