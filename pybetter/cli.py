@@ -1,12 +1,9 @@
-import difflib
 import time
-from datetime import timedelta
 from typing import List, FrozenSet, Tuple
 
 import libcst as cst
 import click
 from pyemojify import emojify
-from pygments import highlight
 from pygments.formatters.terminal256 import Terminal256Formatter
 from pygments.lexers.diff import DiffLexer
 
@@ -22,7 +19,7 @@ from pybetter.improvements import (
     FixTrivialNestedWiths,
     FixUnhashableList,
 )
-from pybetter.utils import resolve_paths
+from pybetter.utils import resolve_paths, create_diff, prettify_time_interval
 
 ALL_IMPROVEMENTS: List[BaseImprovement] = [
     FixNotInConditionOrder(),
@@ -41,7 +38,7 @@ diff_lexer = DiffLexer()
 term256_formatter = Terminal256Formatter()
 
 
-def parse_improvement_codes(code_list: str) -> FrozenSet[str]:
+def filter_improvements_by_code(code_list: str) -> FrozenSet[str]:
     all_codes = frozenset([improvement.CODE for improvement in ALL_IMPROVEMENTS])
     codes = frozenset([code.strip() for code in code_list.split(",")]) - {""}
 
@@ -75,42 +72,6 @@ def process_file(
             improvements_applied.append(case)
 
     return modified_tree.code, improvements_applied
-
-
-def create_diff(original_source: str, processed_source: str, source_file: str) -> str:
-    diff_text = "".join(
-        difflib.unified_diff(
-            original_source.splitlines(keepends=True),
-            processed_source.splitlines(keepends=True),
-            fromfile=source_file,
-            tofile=source_file,
-        )
-    )
-
-    return highlight(diff_text, diff_lexer, term256_formatter)
-
-
-def prettify_time_interval(time_taken: float) -> str:
-    if time_taken > 1.0:
-        minutes, seconds = int(time_taken / 60), int(time_taken % 60)
-        hours, minutes = int(minutes / 60), int(minutes % 60)
-    else:
-        # Even if it takes less than a second, precise value
-        # may still be of interest to us.
-        return f"{int(time_taken*1000)} milliseconds"
-
-    result = []
-
-    if hours:
-        result.append(f"{hours} hours")
-
-    if minutes:
-        result.append(f"{minutes} minutes")
-
-    if seconds:
-        result.append(f"{seconds} seconds")
-
-    return " ".join(result)
 
 
 @click.group()
@@ -163,7 +124,7 @@ def main(paths, noop: bool, show_diff: bool, selected: str, excluded: str):
         return
 
     if selected:
-        selected_codes = parse_improvement_codes(selected)
+        selected_codes = filter_improvements_by_code(selected)
 
         selected_improvements = [
             improvement
@@ -171,7 +132,7 @@ def main(paths, noop: bool, show_diff: bool, selected: str, excluded: str):
             if improvement.CODE in selected_codes
         ]
     elif excluded:
-        excluded_codes = parse_improvement_codes(excluded)
+        excluded_codes = filter_improvements_by_code(excluded)
 
         selected_improvements = [
             improvement
