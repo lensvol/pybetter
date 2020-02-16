@@ -16,7 +16,6 @@ TRIVIAL_NOT_A_IN_B_CASE = (
     """,
 )
 
-
 PARENS_NOT_A_IN_B_CASE = (
     """
     if not (a in b):
@@ -28,18 +27,21 @@ PARENS_NOT_A_IN_B_CASE = (
     """,
 )
 
-# FIXME: Re-enable when nested comparison fix in made.
-# NESTED_COMPARISONS = (
-#     """
-#     if not ((not a in b) in d):
-#         pass
-#     """,
-#     NO_CHANGES_MADE,
-# )
+NESTED_COMPARISONS = (
+    """
+    if not ((not a in b) in d):
+        pass
+    """,
+    """
+    if ((a not in b) not in d):
+        pass
+    """,
+)
 
 
 @pytest.mark.parametrize(
-    "original,expected", [TRIVIAL_NOT_A_IN_B_CASE, PARENS_NOT_A_IN_B_CASE]
+    "original,expected",
+    [TRIVIAL_NOT_A_IN_B_CASE, PARENS_NOT_A_IN_B_CASE, NESTED_COMPARISONS],
 )
 def test_trivial_fmt_string_conversion(original, expected):
     processed, _ = process_file(original.strip(), [FixNotInConditionOrder()])

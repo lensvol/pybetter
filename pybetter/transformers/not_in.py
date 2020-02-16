@@ -14,11 +14,11 @@ class NotInConditionTransformer(NoqaAwareTransformer):
         )
     )
     def replace_not_in_condition(
-        self, original_node: cst.UnaryOperation, _
+        self, _, updated_node: cst.UnaryOperation
     ) -> cst.BaseExpression:
         fixed_comparisons: List[cst.ComparisonTarget] = []
         comparison_node: cst.Comparison = cst.ensure_type(
-            original_node.expression, cst.Comparison
+            updated_node.expression, cst.Comparison
         )
 
         for target in comparison_node.comparisons:
@@ -27,8 +27,12 @@ class NotInConditionTransformer(NoqaAwareTransformer):
             else:
                 fixed_comparisons.append(target)
 
-        # FIXME: For some reason, new node is discarded when doing nested fixes.
-        return cst.Comparison(left=comparison_node.left, comparisons=fixed_comparisons)
+        return cst.Comparison(
+            left=comparison_node.left,
+            lpar=[cst.LeftParen()],
+            rpar=[cst.RightParen()],
+            comparisons=fixed_comparisons,
+        )
 
 
 __all__ = ["NotInConditionTransformer"]
