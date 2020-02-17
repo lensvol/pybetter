@@ -3,7 +3,8 @@ import os
 
 from pygments import highlight
 
-from pybetter.cli import diff_lexer, term256_formatter
+from pygments.formatters.terminal256 import Terminal256Formatter
+from pygments.lexers.diff import DiffLexer
 
 
 def resolve_paths(*paths):
@@ -32,7 +33,7 @@ def create_diff(original_source: str, processed_source: str, source_file: str) -
         )
     )
 
-    return highlight(diff_text, diff_lexer, term256_formatter)
+    return highlight(diff_text, DiffLexer(), Terminal256Formatter())
 
 
 def prettify_time_interval(time_taken: float) -> str:

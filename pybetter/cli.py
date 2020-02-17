@@ -4,8 +4,6 @@ from typing import List, FrozenSet, Tuple
 import libcst as cst
 import click
 from pyemojify import emojify
-from pygments.formatters.terminal256 import Terminal256Formatter
-from pygments.lexers.diff import DiffLexer
 
 from pybetter.improvements import (
     FixNotInConditionOrder,
@@ -32,10 +30,6 @@ ALL_IMPROVEMENTS: List[BaseImprovement] = [
     FixTrivialNestedWiths(),
     FixUnhashableList(),
 ]
-
-
-diff_lexer = DiffLexer()
-term256_formatter = Terminal256Formatter()
 
 
 def filter_improvements_by_code(code_list: str) -> FrozenSet[str]:
