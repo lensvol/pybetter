@@ -140,6 +140,18 @@ with logger():
         SINGLE_WITH_IS_LEFT_ALONE,
         ALIASES_ARE_PRESERVED,
     ],
+    ids=[
+        "trivial nested 'with'",
+        "multiple nested 'with's",
+        "statements between 'with's",
+        "inline comment prevents collapse",
+        "leading comment prevents collapse",
+        "outermost comment is preserved",
+        "single line body is preserved",
+        "unrelated code",
+        "single 'with' is left alone",
+        "'with' aliases are preserved",
+    ],
 )
 def test_collapse_of_nested_with_statements(original, expected):
     processed, _ = process_file(original.strip(), [FixTrivialNestedWiths()])

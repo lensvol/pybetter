@@ -12,6 +12,12 @@ from pybetter.improvements import FixBooleanEqualityChecks
         ("a == b < 42 == True", "a == b < 42"),
         ("(a == True) == False", "not (a == True)"),
     ],
+    ids=[
+        "comparison with False",
+        "comparison with True",
+        "several comparisons",
+        "nested comparisons",
+    ],
 )
 def test_boolean_equality_fix(original, expected):
     processed, _ = process_file(original, [FixBooleanEqualityChecks()])

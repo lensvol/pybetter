@@ -23,6 +23,11 @@ def f():
             None,
         ),
     ],
+    ids=[
+        "trivial returned tuple",
+        "multiple elements in returned tuple",
+        "multi-line returns not processed",
+    ],
 )
 def test_removal_of_parentheses_in_return(original, expected):
     processed, _ = process_file(original, [FixParenthesesInReturn()])

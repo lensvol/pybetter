@@ -141,6 +141,19 @@ NESTED_SETS_ARE_PROCESSED = (
         NESTED_SETS_ARE_PROCESSED,
         COMPLEX_LIST_ARGUMENTS_ARE_UNCHANGED,
     ],
+    ids=[
+        "list literal in {}",
+        "list argument to set()",
+        "set argument to set()",
+        "tuple argument to set()",
+        "list argument to frozenset()",
+        "set argument to frozenset()",
+        "tuple argument to frozenset()",
+        "nested list literal",
+        "tuples are changed",
+        "nested sets",
+        "comples list arguments are unchanged",
+    ],
 )
 def test_replacement_of_list_literal_in_sets(original, expected):
     processed, _ = process_file(original.strip(), [FixUnhashableList()])

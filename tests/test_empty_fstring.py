@@ -31,7 +31,9 @@ EMPTY_FSTRING = (
 
 
 @pytest.mark.parametrize(
-    "original,expected", [TRIVIAL_FSTRING, FSTRING_WITH_ARGUMENTS, EMPTY_FSTRING]
+    "original,expected",
+    [TRIVIAL_FSTRING, FSTRING_WITH_ARGUMENTS, EMPTY_FSTRING],
+    ids=["trivial f-string", "f-string with arguments", "empty f-string"],
 )
 def test_trivial_fmt_string_conversion(original, expected):
     processed, _ = process_file(original.strip(), [FixTrivialFmtStringCreation()])

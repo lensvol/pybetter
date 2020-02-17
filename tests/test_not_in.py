@@ -42,6 +42,7 @@ NESTED_COMPARISONS = (
 @pytest.mark.parametrize(
     "original,expected",
     [TRIVIAL_NOT_A_IN_B_CASE, PARENS_NOT_A_IN_B_CASE, NESTED_COMPARISONS],
+    ids=["trivial 'not A in B'", "parenthesized 'not A in B'", "nested comparisons"],
 )
 def test_not_in_transformation(original, expected):
     processed, _ = process_file(original.strip(), [FixNotInConditionOrder()])

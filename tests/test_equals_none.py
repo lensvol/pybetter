@@ -41,6 +41,11 @@ NESTED_NONE_CMPS_PROCESSED = (
 @pytest.mark.parametrize(
     "original,expected",
     [TRIVIAL_NONE_COMPARISON, NONE_IDENTITY_CHECK_IGNORED, NESTED_NONE_CMPS_PROCESSED],
+    ids=[
+        "trivial comparison with None",
+        "identity check with None",
+        "multiple comparisons with None",
+    ],
 )
 def test_trivial_fmt_string_conversion(original, expected):
     processed, _ = process_file(original.strip(), [FixEqualsNone()])
