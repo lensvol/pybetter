@@ -7,6 +7,7 @@
 ### Bugfixes:
 
 * Fix issue with `noqa` directive with one argument being treated as `noqa` without any arguments.
+* (B001) Fix arrangement of parentheses on transformed comparisons. 
 
 ### Misc:
 

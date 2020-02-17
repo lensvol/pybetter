@@ -33,7 +33,7 @@ NESTED_COMPARISONS = (
         pass
     """,
     """
-    if ((a not in b) not in d):
+    if (a not in b) not in d:
         pass
     """,
 )
@@ -43,7 +43,7 @@ NESTED_COMPARISONS = (
     "original,expected",
     [TRIVIAL_NOT_A_IN_B_CASE, PARENS_NOT_A_IN_B_CASE, NESTED_COMPARISONS],
 )
-def test_trivial_fmt_string_conversion(original, expected):
+def test_not_in_transformation(original, expected):
     processed, _ = process_file(original.strip(), [FixNotInConditionOrder()])
 
     assert processed.strip() == (expected or original).strip()

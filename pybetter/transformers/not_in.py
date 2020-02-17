@@ -29,8 +29,8 @@ class NotInConditionTransformer(NoqaAwareTransformer):
 
         return cst.Comparison(
             left=comparison_node.left,
-            lpar=[cst.LeftParen()],
-            rpar=[cst.RightParen()],
+            lpar=updated_node.lpar,
+            rpar=updated_node.rpar,
             comparisons=fixed_comparisons,
         )
 
