@@ -1,7 +1,9 @@
 # pybetter
 ![PyPI](https://img.shields.io/pypi/v/pybetter) 
+![Travis CI](https://img.shields.io/travis/com/lensvol/pybetter)
+![Code coverage](https://img.shields.io/codecov/c/github/lensvol/pybetter)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pybetter)
-![GitHub](https://img.shields.io/github/license/lensvol/pybetter)
+![License](https://img.shields.io/github/license/lensvol/pybetter)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 Tool for fixing trivial problems with your code.
