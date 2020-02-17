@@ -37,10 +37,10 @@ FROZENSET_FUNCTION_LIST_ARGUMENT = (
 
 SET_FUNCTION_SET_ARGUMENT = (
     """
-    set([["a", "b"], "c"])
+    set({["a", "b"], "c"})
     """,
     """
-    set([("a", "b"), "c"])
+    set({("a", "b"), "c"})
     """,
 )
 
@@ -56,10 +56,10 @@ FROZENSET_FUNCTION_SET_ARGUMENT = (
 
 SET_FUNCTION_TUPLE_ARGUMENT = (
     """
-    set([["a", "b"], "c"])
+    set((["a", "b"], "c"))
     """,
     """
-    set([("a", "b"), "c"])
+    set((("a", "b"), "c"))
     """,
 )
 
