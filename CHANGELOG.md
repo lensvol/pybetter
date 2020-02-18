@@ -6,6 +6,13 @@
 
 * (B001) Fix issue with trying to convert multiple consecutive comparisons.
 
+### Misc:
+
+* `--diff` option behaviour has changed:
+  * Output is now being printed on `sys.stderr` instead if `sys.stdout`.
+  * Source lines are no longer highlighted if `sys.stderr` is redirected away from TTY.
+
+
 
 ## 0.3.3
 

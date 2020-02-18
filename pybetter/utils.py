@@ -1,7 +1,7 @@
 import difflib
 import os
 
-from pygments import highlight
+from pygments import highlight as highlight_source
 
 from pygments.formatters.terminal256 import Terminal256Formatter
 from pygments.lexers.diff import DiffLexer
@@ -23,7 +23,9 @@ def resolve_paths(*paths):
 __all__ = ["resolve_paths"]
 
 
-def create_diff(original_source: str, processed_source: str, source_file: str) -> str:
+def create_diff(
+    original_source: str, processed_source: str, source_file: str, highlight=False
+) -> str:
     diff_text = "".join(
         difflib.unified_diff(
             original_source.splitlines(keepends=True),
@@ -33,7 +35,10 @@ def create_diff(original_source: str, processed_source: str, source_file: str) -
         )
     )
 
-    return highlight(diff_text, DiffLexer(), Terminal256Formatter())
+    if highlight:
+        diff_text = highlight_source(diff_text, DiffLexer(), Terminal256Formatter())
+
+    return diff_text
 
 
 def prettify_time_interval(time_taken: float) -> str:

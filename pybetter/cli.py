@@ -1,3 +1,4 @@
+import sys
 import time
 from typing import List, FrozenSet, Tuple
 
@@ -162,7 +163,17 @@ def main(paths, noop: bool, show_diff: bool, selected: str, excluded: str):
 
             if show_diff:
                 print()
-                print(create_diff(original_source, processed_source, source_file.name))
+                print(
+                    create_diff(
+                        original_source,
+                        processed_source,
+                        source_file.name,
+                        # ANSI codes used for highlighting source code
+                        # will be saved to file and cause `patch` to bail out.
+                        highlight=sys.stderr.isatty(),
+                    ),
+                    file=sys.stderr,
+                )
 
             if noop:
                 continue
