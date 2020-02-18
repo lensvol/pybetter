@@ -22,7 +22,9 @@ class RemoveParenthesesFromReturn(NoqaAwareTransformer):
         if position.start.line != position.end.line:
             return original_node
 
-        return updated_node.with_deep_changes(updated_node.value, lpar=[], rpar=[])
+        return updated_node.with_deep_changes(
+            cst.ensure_type(updated_node.value, cst.Tuple), lpar=[], rpar=[]
+        )
 
 
 __all__ = ["RemoveParenthesesFromReturn"]

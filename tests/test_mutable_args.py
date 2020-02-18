@@ -68,7 +68,6 @@ def outer(a=None):
 )
 
 
-@pytest.mark.wip
 @pytest.mark.parametrize(
     "original,expected",
     [
