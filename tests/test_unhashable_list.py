@@ -156,6 +156,6 @@ NESTED_SETS_ARE_PROCESSED = (
     ],
 )
 def test_replacement_of_list_literal_in_sets(original, expected):
-    processed, _ = process_file(original.strip(), [FixUnhashableList()])
+    processed, _ = process_file(original.strip(), [FixUnhashableList])
 
     assert processed.strip() == (expected or original).strip()

@@ -48,6 +48,6 @@ NESTED_NONE_CMPS_PROCESSED = (
     ],
 )
 def test_trivial_fmt_string_conversion(original, expected):
-    processed, _ = process_file(original.strip(), [FixEqualsNone()])
+    processed, _ = process_file(original.strip(), [FixEqualsNone])
 
     assert processed.strip() == (expected or original).strip()

@@ -36,6 +36,6 @@ EMPTY_FSTRING = (
     ids=["trivial f-string", "f-string with arguments", "empty f-string"],
 )
 def test_trivial_fmt_string_conversion(original, expected):
-    processed, _ = process_file(original.strip(), [FixTrivialFmtStringCreation()])
+    processed, _ = process_file(original.strip(), [FixTrivialFmtStringCreation])
 
     assert processed.strip() == (expected or original).strip()

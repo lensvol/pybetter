@@ -65,6 +65,6 @@ TUPLE_INSIDE_RETURN_EXPR = (
     ],
 )
 def test_removal_of_parentheses_in_return(original, expected):
-    processed, _ = process_file(original.strip(), [FixParenthesesInReturn()])
+    processed, _ = process_file(original.strip(), [FixParenthesesInReturn])
 
     assert processed.strip() == (expected or original).strip()

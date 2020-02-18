@@ -106,5 +106,5 @@ def outer(b=None, a=None):
     ],
 )
 def test_mutable_defaults_extraction(original, expected):
-    processed, _ = process_file(original.strip(), [FixMutableDefaultArgs()])
+    processed, _ = process_file(original.strip(), [FixMutableDefaultArgs])
     assert processed.strip() == (expected or original).strip()

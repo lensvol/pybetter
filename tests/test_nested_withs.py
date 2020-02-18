@@ -154,6 +154,6 @@ with logger():
     ],
 )
 def test_collapse_of_nested_with_statements(original, expected):
-    processed, _ = process_file(original.strip(), [FixTrivialNestedWiths()])
+    processed, _ = process_file(original.strip(), [FixTrivialNestedWiths])
 
     assert processed.strip() == (expected or original).strip()

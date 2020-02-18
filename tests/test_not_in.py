@@ -73,6 +73,6 @@ CONSECUTIVE_COMPARISONS_UNCHANGED = (
     ],
 )
 def test_not_in_transformation(original, expected):
-    processed, _ = process_file(original.strip(), [FixNotInConditionOrder()])
+    processed, _ = process_file(original.strip(), [FixNotInConditionOrder])
 
     assert processed.strip() == (expected or original).strip()

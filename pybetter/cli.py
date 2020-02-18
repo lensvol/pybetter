@@ -1,6 +1,6 @@
 import sys
 import time
-from typing import List, FrozenSet, Tuple
+from typing import List, FrozenSet, Tuple, Type, Iterable
 
 import libcst as cst
 import click
@@ -20,17 +20,17 @@ from pybetter.improvements import (
 )
 from pybetter.utils import resolve_paths, create_diff, prettify_time_interval
 
-ALL_IMPROVEMENTS: List[BaseImprovement] = [
-    FixNotInConditionOrder(),
-    FixMutableDefaultArgs(),
-    FixParenthesesInReturn(),
-    FixMissingAllAttribute(),
-    FixEqualsNone(),
-    FixBooleanEqualityChecks(),
-    FixTrivialFmtStringCreation(),
-    FixTrivialNestedWiths(),
-    FixUnhashableList(),
-]
+ALL_IMPROVEMENTS = (
+    FixNotInConditionOrder,
+    FixMutableDefaultArgs,
+    FixParenthesesInReturn,
+    FixMissingAllAttribute,
+    FixEqualsNone,
+    FixBooleanEqualityChecks,
+    FixTrivialFmtStringCreation,
+    FixTrivialNestedWiths,
+    FixUnhashableList,
+)
 
 
 def filter_improvements_by_code(code_list: str) -> FrozenSet[str]:
@@ -53,14 +53,15 @@ def filter_improvements_by_code(code_list: str) -> FrozenSet[str]:
 
 
 def process_file(
-    source: str, improvements: List[BaseImprovement]
+    source: str, improvements: Iterable[Type[BaseImprovement]]
 ) -> Tuple[str, List[BaseImprovement]]:
     tree: cst.Module = cst.parse_module(source)
     modified_tree: cst.Module = tree
     improvements_applied = []
 
-    for case in improvements:
+    for case_cls in improvements:
         intermediate_tree = modified_tree
+        case = case_cls()
         modified_tree = case.improve(intermediate_tree)
 
         if not modified_tree.deep_equals(intermediate_tree):
@@ -108,7 +109,7 @@ def main(paths, noop: bool, show_diff: bool, selected: str, excluded: str):
         print(emojify("Nothing to do. :sleeping:"))
         return
 
-    selected_improvements = ALL_IMPROVEMENTS
+    selected_improvements = list(ALL_IMPROVEMENTS)
 
     if selected and excluded:
         print(
