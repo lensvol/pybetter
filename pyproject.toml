@@ -30,13 +30,13 @@ libcst = "^0.3.1"
 click = "^7.0"
 pyemojify = "^0.2.0"
 pygments = "^2.5.2"
-pytest-cov = "^2.8.1"
 
 [tool.poetry.dev-dependencies]
 ipdb = "^0.12.3"
 mypy = "^0.761"
 flake8 = "^3.7.9"
 pytest = "^5.3.4"
+pytest-cov = "^2.8.1"
 
 [tool.poetry.scripts]
 pybetter = 'pybetter.cli:main'
