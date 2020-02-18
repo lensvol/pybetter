@@ -2,7 +2,7 @@
 
 
 
-## 0.3.3 WIP
+## 0.3.3
 
 ### Bugfixes:
 
@@ -14,6 +14,7 @@
 * Use `pygments` for highlighting of diffs.
 * Output time taken to apply selected transformations.
 * Output total time taken to process all files in provided paths.
+* Now we use Travis CI to run tests on each commit.
 
 ### Features:
 
