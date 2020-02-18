@@ -1,5 +1,3 @@
-from typing import List
-
 import libcst as cst
 import libcst.matchers as m
 
@@ -16,22 +14,19 @@ class NotInConditionTransformer(NoqaAwareTransformer):
     def replace_not_in_condition(
         self, _, updated_node: cst.UnaryOperation
     ) -> cst.BaseExpression:
-        fixed_comparisons: List[cst.ComparisonTarget] = []
         comparison_node: cst.Comparison = cst.ensure_type(
             updated_node.expression, cst.Comparison
         )
 
-        for target in comparison_node.comparisons:
-            if m.matches(target, m.ComparisonTarget(operator=m.In())):
-                fixed_comparisons.append(target.with_changes(operator=cst.NotIn()))
-            else:
-                fixed_comparisons.append(target)
-
+        # TODO: Implement support for multiple consecutive 'not ... in B',
+        # even if it does not make any sense in practice.
         return cst.Comparison(
             left=comparison_node.left,
             lpar=updated_node.lpar,
             rpar=updated_node.rpar,
-            comparisons=fixed_comparisons,
+            comparisons=[
+                comparison_node.comparisons[0].with_changes(operator=cst.NotIn())
+            ],
         )
 
 

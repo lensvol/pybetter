@@ -1,5 +1,10 @@
 # Version history
 
+## 0.3.4 WIP
+
+### Bugfixes:
+
+* (B001) Fix issue with trying to convert multiple consecutive comparisons.
 
 
 ## 0.3.3
