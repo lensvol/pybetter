@@ -5,6 +5,7 @@
 ### Bugfixes:
 
 * (B001) Fix issue with trying to convert multiple consecutive comparisons.
+* (B003) Fix unnecessary elimination of parens inside returned expression.
 
 ### Misc:
 
