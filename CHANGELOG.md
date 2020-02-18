@@ -6,6 +6,7 @@
 
 * (B001) Fix issue with trying to convert multiple consecutive comparisons.
 * (B002) Properly process nested functions.
+* (B002) Ensure that order of arguments is preserved during iteration.
 * (B003) Fix unnecessary elimination of parens inside returned expression.
 
 ### Misc:

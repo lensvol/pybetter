@@ -1,5 +1,5 @@
 from itertools import takewhile, dropwhile
-from typing import Union, Dict, List, Optional
+from typing import Union, Dict, List, Optional, Tuple
 
 import libcst as cst
 from libcst import matchers as m
@@ -32,7 +32,7 @@ class ArgEmptyInitTransformer(NoqaAwareTransformer):
         self, original_node: cst.FunctionDef, updated_node: cst.FunctionDef
     ) -> Union[cst.BaseStatement, cst.RemovalSentinel]:
         modified_defaults: List = []
-        mutable_args: Dict[cst.Name, Union[cst.List, cst.Dict]] = {}
+        mutable_args: List[Tuple[cst.Name, Union[cst.List, cst.Dict]]] = []
 
         for param in updated_node.params.params:
             if not m.matches(param, m.Param(default=m.OneOf(m.List(), m.Dict()))):
@@ -44,7 +44,7 @@ class ArgEmptyInitTransformer(NoqaAwareTransformer):
             if not isinstance(param.default, (cst.List, cst.Dict)):
                 continue
 
-            mutable_args[param.name] = param.default
+            mutable_args.append((param.name, param.default))
             modified_defaults.append(param.with_changes(default=cst.Name("None"),))
 
         if not mutable_args:
@@ -64,7 +64,7 @@ class ArgEmptyInitTransformer(NoqaAwareTransformer):
             parse_template_statement(
                 DEFAULT_INIT_TEMPLATE, config=self.module_config, arg=arg, init=init
             ).with_changes(leading_lines=[EMPTY_LINE])
-            for arg, init in mutable_args.items()
+            for arg, init in mutable_args
         ]
 
         # Docstring should always go right after the function definition,

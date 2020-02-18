@@ -68,6 +68,26 @@ def outer(a=None):
 )
 
 
+ARGUMENT_ORDER_PRESERVED = (
+    """
+def outer(b=[], a={}):
+    pass
+    """,
+    """
+def outer(b=None, a=None):
+
+    if b is None:
+        b = []
+
+    if a is None:
+        a = {}
+
+    pass 
+    """,
+)
+
+
+@pytest.mark.wip
 @pytest.mark.parametrize(
     "original,expected",
     [
@@ -75,12 +95,14 @@ def outer(a=None):
         EMPTY_MUTABLE_DEFAULT_EXTRACTED,
         NONEMPTY_MUTABLE_DEFAULT_EXTRACTED,
         NESTED_FUNCTIONS_ARE_PROCESSED,
+        ARGUMENT_ORDER_PRESERVED,
     ],
     ids=[
         "non-mutable defaults are ignored",
         "empty mutable default is extracted",
         "non-empty mutable default",
         "nested functions with defaults",
+        "argument order is preserved",
     ],
 )
 def test_mutable_defaults_extraction(original, expected):
