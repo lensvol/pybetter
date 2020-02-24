@@ -1,3 +1,5 @@
+"""App's entry point."""
+
 import sys
 
 from pybetter.cli import main

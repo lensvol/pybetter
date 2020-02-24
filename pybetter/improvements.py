@@ -5,30 +5,49 @@ from libcst import MetadataWrapper
 from typing_extensions import Type
 
 from pybetter.transformers.all_attribute import AllAttributeTransformer
-from pybetter.transformers.base import NoqaDetectionVisitor, NoqaAwareTransformer
-from pybetter.transformers.boolean_equality import BooleanLiteralEqualityTransformer
+from pybetter.transformers.base import (
+    NoqaAwareTransformer,
+    NoqaDetectionVisitor,
+)
+from pybetter.transformers.boolean_equality import (
+    BooleanLiteralEqualityTransformer,
+)
 from pybetter.transformers.empty_fstring import TrivialFmtStringTransformer
 from pybetter.transformers.equals_none import EqualsNoneIsNoneTransformer
 from pybetter.transformers.mutable_args import ArgEmptyInitTransformer
 from pybetter.transformers.nested_withs import NestedWithTransformer
 from pybetter.transformers.not_in import NotInConditionTransformer
-from pybetter.transformers.parenthesized_return import RemoveParenthesesFromReturn
+from pybetter.transformers.parenthesized_return import (
+    RemoveParenthesesFromReturn,
+)
 from pybetter.transformers.unhashable_list import UnhashableListTransformer
 
 
 class BaseImprovement(ABC):
+    """Base class for improvements."""
+
     CODE: str
     NAME: str
     DESCRIPTION: str
     TRANSFORMER: Type[NoqaAwareTransformer]
 
     def improve(self, tree: cst.Module):
+        """Apply improvement to the syntax tree.
+
+        Arguments:
+            tree: syntax tree
+
+        Returns:
+            None
+        """
         noqa_detector = NoqaDetectionVisitor()
         wrapper = MetadataWrapper(tree)
 
         with noqa_detector.resolve(wrapper):
             wrapper.visit(noqa_detector)
-            transformer = self.TRANSFORMER(self.CODE, noqa_detector.get_noqa_lines())
+            transformer = self.TRANSFORMER(
+                self.CODE, noqa_detector.get_noqa_lines(),
+            )
             return wrapper.visit(transformer)
 
 
@@ -95,7 +114,7 @@ class FixUnhashableList(BaseImprovement):
     TRANSFORMER = UnhashableListTransformer
 
 
-__all__ = [
+__all__ = (
     "BaseImprovement",
     "FixBooleanEqualityChecks",
     "FixEqualsNone",
@@ -106,4 +125,4 @@ __all__ = [
     "FixTrivialFmtStringCreation",
     "FixTrivialNestedWiths",
     "FixUnhashableList",
-]
+)

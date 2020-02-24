@@ -1,24 +1,26 @@
+"""Command line interface definition."""
+
 import sys
 import time
-from typing import List, FrozenSet, Tuple, Type, Iterable
+from typing import FrozenSet, Iterable, List, Tuple, Type
 
-import libcst as cst
 import click
+import libcst as cst
 from pyemojify import emojify
 
 from pybetter.improvements import (
-    FixNotInConditionOrder,
     BaseImprovement,
-    FixMutableDefaultArgs,
-    FixParenthesesInReturn,
-    FixMissingAllAttribute,
-    FixEqualsNone,
     FixBooleanEqualityChecks,
+    FixEqualsNone,
+    FixMissingAllAttribute,
+    FixMutableDefaultArgs,
+    FixNotInConditionOrder,
+    FixParenthesesInReturn,
     FixTrivialFmtStringCreation,
     FixTrivialNestedWiths,
     FixUnhashableList,
 )
-from pybetter.utils import resolve_paths, create_diff, prettify_time_interval
+from pybetter.utils import create_diff, prettify_time_interval, resolve_paths
 
 ALL_IMPROVEMENTS = (
     FixNotInConditionOrder,
@@ -32,31 +34,41 @@ ALL_IMPROVEMENTS = (
     FixUnhashableList,
 )
 
+ALL_CODES = frozenset(improvement.CODE for improvement in ALL_IMPROVEMENTS)
+
 
 def filter_improvements_by_code(code_list: str) -> FrozenSet[str]:
-    all_codes = frozenset([improvement.CODE for improvement in ALL_IMPROVEMENTS])
-    codes = frozenset([code.strip() for code in code_list.split(",")]) - {""}
+    codes = frozenset(
+        code.strip() for code in code_list.split(",")
+    ) - {""}
 
     if not codes:
         return frozenset()
 
-    wrong_codes = codes.difference(all_codes)
+    wrong_codes = ','.join(codes - ALL_CODES)
     if wrong_codes:
-        print(
-            emojify(
-                f":no_entry_sign: Unknown improvements selected: {','.join(wrong_codes)}"
-            )
-        )
+        print(emojify(
+            f":no_entry_sign: Unknown improvements selected: {wrong_codes}",
+        ))
         return frozenset()
 
     return codes
 
 
 def process_file(
-    source: str, improvements: Iterable[Type[BaseImprovement]]
+    source: str, improvements: Iterable[Type[BaseImprovement]],
 ) -> Tuple[str, List[BaseImprovement]]:
-    tree: cst.Module = cst.parse_module(source)
-    modified_tree: cst.Module = tree
+    """
+    Apply some improvements to the source file.
+
+    Arguments:
+        source: Python source
+        improvements: list of improvements to apply
+
+    Returns:
+        A tuple of processed code and list of applied improvements.
+    """
+    modified_tree: cst.Module = cst.parse_module(source)
     improvements_applied = []
 
     for case_cls in improvements:
@@ -70,12 +82,7 @@ def process_file(
     return modified_tree.code, improvements_applied
 
 
-@click.group()
-def cli():
-    pass
-
-
-@cli.command()
+@click.command()
 @click.option(
     "--noop",
     is_flag=True,
@@ -105,6 +112,7 @@ def cli():
 )
 @click.argument("paths", type=click.Path(), nargs=-1)
 def main(paths, noop: bool, show_diff: bool, selected: str, excluded: str):
+    """Make your code better."""
     if not paths:
         print(emojify("Nothing to do. :sleeping:"))
         return
@@ -112,11 +120,10 @@ def main(paths, noop: bool, show_diff: bool, selected: str, excluded: str):
     selected_improvements = list(ALL_IMPROVEMENTS)
 
     if selected and excluded:
-        print(
-            emojify(
-                ":no_entry_sign: '--select' and '--exclude' options are mutually exclusive!"
-            )
-        )
+        print(emojify(
+            ":no_entry_sign: '--select' and '--exclude' options"
+            " are mutually exclusive!",
+        ))
         return
 
     if selected:
@@ -149,7 +156,7 @@ def main(paths, noop: bool, show_diff: bool, selected: str, excluded: str):
 
             start_ts = time.process_time()
             processed_source, applied = process_file(
-                original_source, selected_improvements
+                original_source, selected_improvements,
             )
             end_ts = time.process_time()
 
@@ -189,4 +196,4 @@ def main(paths, noop: bool, show_diff: bool, selected: str, excluded: str):
     print(emojify(f":sparkles: All done! :sparkles: :clock2: {time_taken}"))
 
 
-__all__ = ["main", "process_file"]
+__all__ = ("main", "process_file")
