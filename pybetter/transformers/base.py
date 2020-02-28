@@ -1,12 +1,14 @@
 import re
 from abc import ABCMeta
-from typing import Dict, Optional, FrozenSet
+from typing import Dict, FrozenSet, Optional
 
 import libcst as cst
 from libcst.matchers import MatcherDecoratableTransformer
 from libcst.metadata import PositionProvider
 
-NOQA_MARKUP_REGEX = re.compile(r"noqa(?:: ((?:B[0-9]{3},)+(?:B[0-9]{3})|(B[0-9]{3})))?")
+NOQA_MARKUP_REGEX = re.compile(
+    r"noqa(?:: ((?:B[0-9]{3},)+(?:B[0-9]{3})|(B[0-9]{3})))?",
+)
 NOQA_CATCHALL: str = "B999"
 
 NoqaLineMapping = Dict[int, FrozenSet[str]]
@@ -21,14 +23,15 @@ class NoqaDetectionVisitor(cst.CSTVisitor):
         super().__init__()
 
     def visit_Comment(self, node: cst.Comment) -> Optional[bool]:
-        m = re.search(NOQA_MARKUP_REGEX, node.value)
-        if m:
-            codes = m.group(1)
-            position: cst.metadata.CodeRange = self.get_metadata(PositionProvider, node)
-            if codes:
-                self._line_to_code[position.start.line] = frozenset(codes.split(","))
-            else:
-                self._line_to_code[position.start.line] = frozenset({NOQA_CATCHALL})
+        match = re.search(NOQA_MARKUP_REGEX, node.value)
+        if match:
+            codes = match.group(1)
+            position: cst.metadata.CodeRange = self.get_metadata(
+                PositionProvider, node,
+            )
+            self._line_to_code[position.start.line] = frozenset(
+                codes.split(",") if codes else {NOQA_CATCHALL},
+            )
 
         return True
 
@@ -46,7 +49,8 @@ class PositionProviderEnsuranceMetaclass(ABCMeta):
 
 
 class NoqaAwareTransformer(
-    MatcherDecoratableTransformer, metaclass=PositionProviderEnsuranceMetaclass
+    MatcherDecoratableTransformer,
+    metaclass=PositionProviderEnsuranceMetaclass,
 ):
     METADATA_DEPENDENCIES = (PositionProvider,)  # type: ignore
 
@@ -56,15 +60,21 @@ class NoqaAwareTransformer(
         super().__init__()
 
     def on_visit(self, node: cst.CSTNode):
-        position: cst.metadata.CodeRange = self.get_metadata(PositionProvider, node)
+        position: cst.metadata.CodeRange = self.get_metadata(
+            PositionProvider, node,
+        )
         applicable_noqa: FrozenSet[str] = self.noqa_lines.get(
-            position.start.line, frozenset()
+            position.start.line, frozenset(),
         )
 
-        if self.check_code in applicable_noqa or NOQA_CATCHALL in applicable_noqa:
+        if (  # noqa: WPS337
+            self.check_code in applicable_noqa
+        ) or (
+            NOQA_CATCHALL in applicable_noqa
+        ):
             return False
 
         return super().on_visit(node)
 
 
-__all__ = ["NoqaAwareTransformer", "NoqaDetectionVisitor", "NoqaLineMapping"]
+__all__ = ("NoqaAwareTransformer", "NoqaDetectionVisitor", "NoqaLineMapping")
