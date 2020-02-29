@@ -1,5 +1,13 @@
 # Version history
 
+## 0.3.5
+
+### Misc:
+
+* Add `--exit-code` option to facilitate use as a static analysis tool.
+
+
+
 ## 0.3.4
 
 ### Bugfixes:
