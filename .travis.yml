@@ -9,8 +9,11 @@ before_install:
   - pip install -U pytest
   - pip install pytest-cov
   - pip install codecov
+  - pip install mypy
 install:
   - pip install .
-script: pytest
+script:
+  - mypy pybetter --ignore-missing-imports
+  - pytest
 after_success:
   - codecov
