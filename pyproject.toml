@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pybetter"
-version = "0.3.6"
+version = "0.3.5"
 description = "Tool for fixing trivial problems with your code."
 authors = ["Kirill Borisov <lensvol@gmail.com>"]
 license = "MIT"
