@@ -103,8 +103,18 @@ def cli():
     metavar="CODES",
     help="Exclude improvements with the provided codes.",
 )
+@click.option(
+    "--exit-code",
+    "exit_code",
+    type=int,
+    metavar="<CODE>",
+    default=0,
+    help="Exit with provided code if fixes were applied.",
+)
 @click.argument("paths", type=click.Path(), nargs=-1)
-def main(paths, noop: bool, show_diff: bool, selected: str, excluded: str):
+def main(
+    paths, noop: bool, show_diff: bool, selected: str, excluded: str, exit_code: int
+):
     if not paths:
         print(emojify("Nothing to do. :sleeping:"))
         return
@@ -142,6 +152,7 @@ def main(paths, noop: bool, show_diff: bool, selected: str, excluded: str):
 
     python_files = filter(lambda fn: fn.endswith(".py"), resolve_paths(*paths))
 
+    are_fixes_applied = False
     total_start_ts = time.process_time()
     for path_to_source in python_files:
         with open(path_to_source, "r+") as source_file:
@@ -176,6 +187,8 @@ def main(paths, noop: bool, show_diff: bool, selected: str, excluded: str):
                     file=sys.stderr,
                 )
 
+            are_fixes_applied = True
+
             if noop:
                 continue
 
@@ -187,6 +200,9 @@ def main(paths, noop: bool, show_diff: bool, selected: str, excluded: str):
 
     time_taken = prettify_time_interval(time.process_time() - total_start_ts)
     print(emojify(f":sparkles: All done! :sparkles: :clock2: {time_taken}"))
+
+    if are_fixes_applied:
+        sys.exit(exit_code)
 
 
 __all__ = ["main", "process_file"]
