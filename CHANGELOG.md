@@ -2,7 +2,10 @@
 
 ## 0.3.6 WIP
 
-* TBD
+### Misc
+
+* Updated dependencies.
+
 
 ## 0.3.5
 
