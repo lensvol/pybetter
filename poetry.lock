@@ -202,7 +202,7 @@ description = "A concrete syntax tree with AST-like properties for Python 3.5, 3
 name = "libcst"
 optional = false
 python-versions = ">=3.6"
-version = "0.3.1"
+version = "0.3.3"
 
 [package.dependencies]
 pyyaml = ">=5.2"
@@ -610,8 +610,8 @@ jedi = [
     {file = "jedi-0.16.0.tar.gz", hash = "sha256:d5c871cb9360b414f981e7072c52c33258d598305280fef91c6cae34739d65d5"},
 ]
 libcst = [
-    {file = "libcst-0.3.1-py3-none-any.whl", hash = "sha256:61a861b464560f4718f8415312c9ba901c2d95347d7f8959baea4512f3a062e2"},
-    {file = "libcst-0.3.1.tar.gz", hash = "sha256:9eeb294bd663b28ddab42bf729f85c438ecaf767fe054f5ab88e895120e56ea9"},
+    {file = "libcst-0.3.3-py3-none-any.whl", hash = "sha256:846818fcc622a28fd1f4b8b8019e904c3a63c21470be1972a72be28a87cbb6f1"},
+    {file = "libcst-0.3.3.tar.gz", hash = "sha256:32c3a31d8a2d6994faf1cb2b966a23da67cf206e543f99e70120fb9a7d164c5e"},
 ]
 mccabe = [
     {file = "mccabe-0.6.1-py2.py3-none-any.whl", hash = "sha256:ab8a6258860da4b6677da4bd2fe5dc2c659cff31b3ee4f7f5d64e79735b80d42"},
@@ -757,6 +757,7 @@ typing-inspect = [
 ]
 wcwidth = [
     {file = "wcwidth-0.1.8-py2.py3-none-any.whl", hash = "sha256:8fd29383f539be45b20bd4df0dc29c20ba48654a41e661925e612311e9f3c603"},
+    {file = "wcwidth-0.1.8.tar.gz", hash = "sha256:f28b3e8a6483e5d49e7f8949ac1a78314e740333ae305b4ba5defd3e74fb37a8"},
 ]
 zipp = [
     {file = "zipp-2.2.0-py36-none-any.whl", hash = "sha256:d65287feb793213ffe11c0f31b81602be31448f38aeb8ffc2eb286c4f6f6657e"},
