@@ -10,10 +10,12 @@ before_install:
   - pip install pytest-cov
   - pip install codecov
   - pip install mypy
+  - pip install pybetter
 install:
   - pip install .
 script:
   - mypy pybetter --ignore-missing-imports
   - pytest
+  - pybetter --diff --noop --exit-code 42 pybetter/
 after_success:
   - codecov
