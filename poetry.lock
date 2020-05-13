@@ -202,7 +202,7 @@ description = "A concrete syntax tree with AST-like properties for Python 3.5, 3
 name = "libcst"
 optional = false
 python-versions = ">=3.6"
-version = "0.3.4"
+version = "0.3.5"
 
 [package.dependencies]
 pyyaml = ">=5.2"
@@ -610,8 +610,8 @@ jedi = [
     {file = "jedi-0.16.0.tar.gz", hash = "sha256:d5c871cb9360b414f981e7072c52c33258d598305280fef91c6cae34739d65d5"},
 ]
 libcst = [
-    {file = "libcst-0.3.4-py3-none-any.whl", hash = "sha256:625feffa383da08c148539ddb879fadb4090a775d9b97463209a0864a59d4828"},
-    {file = "libcst-0.3.4.tar.gz", hash = "sha256:449bf67813e4ced937edb9811355e2734ac709b4f36416889c6e169a03b96362"},
+    {file = "libcst-0.3.5-py3-none-any.whl", hash = "sha256:a6dafcf782fa8093c8a89be6698e7e7546d86465a11f273aa0aec7fae0eb1b87"},
+    {file = "libcst-0.3.5.tar.gz", hash = "sha256:c2a7cd82fd1cb5abb32f8e97fd936977a4fa04864c1d94adf513653a7c6209a4"},
 ]
 mccabe = [
     {file = "mccabe-0.6.1-py2.py3-none-any.whl", hash = "sha256:ab8a6258860da4b6677da4bd2fe5dc2c659cff31b3ee4f7f5d64e79735b80d42"},
