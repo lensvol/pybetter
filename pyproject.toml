@@ -33,7 +33,7 @@ pygments = "^2.5.2"
 
 [tool.poetry.dev-dependencies]
 ipdb = "^0.13.2"
-mypy = "^0.770"
+mypy = "^0.780"
 flake8 = "^3.7.9"
 pytest = "^5.4.3"
 pytest-cov = "^2.8.1"
