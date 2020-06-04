@@ -36,7 +36,7 @@ ipdb = "^0.13.2"
 mypy = "^0.780"
 flake8 = "^3.8.2"
 pytest = "^5.4.3"
-pytest-cov = "^2.8.1"
+pytest-cov = "^2.9.0"
 
 [tool.poetry.scripts]
 pybetter = 'pybetter.cli:main'
