@@ -15,6 +15,16 @@ TRIVIAL_FSTRING = (
 )
 
 
+TRIVIAL_FSTRING_IN_TRIPLE_QUOTES = (
+    '''
+    f"""Hello, world!"""
+    ''',
+    '''
+    """Hello, world!"""
+    ''',
+)
+
+
 FSTRING_WITH_ARGUMENTS = (
     """
     f"Hello, {username}"
@@ -30,10 +40,21 @@ EMPTY_FSTRING = (
 )
 
 
+@pytest.mark.wip
 @pytest.mark.parametrize(
     "original,expected",
-    [TRIVIAL_FSTRING, FSTRING_WITH_ARGUMENTS, EMPTY_FSTRING],
-    ids=["trivial f-string", "f-string with arguments", "empty f-string"],
+    [
+        TRIVIAL_FSTRING,
+        TRIVIAL_FSTRING_IN_TRIPLE_QUOTES,
+        FSTRING_WITH_ARGUMENTS,
+        EMPTY_FSTRING,
+    ],
+    ids=[
+        "trivial f-string",
+        "trivial f-string in triple quotes",
+        "f-string with arguments",
+        "empty f-string",
+    ],
 )
 def test_trivial_fmt_string_conversion(original, expected):
     processed, _ = process_file(original.strip(), [FixTrivialFmtStringCreation])
