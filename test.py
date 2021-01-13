@@ -2,7 +2,7 @@ def check_membership(username, allowed=[], banned_sets={}):
     """
     This function is badly written, but for once it is intentional.
     :param username:
-    :param allowed:
+    :param allowed:x
     :return:
     """
     """One more thing"""
@@ -13,7 +13,7 @@ def check_membership(username, allowed=[], banned_sets={}):
 
     for banned in banned_sets:
         if username in banned:
-            return (False, f"User was banned!")
+            return (False, f"""User was banned!""")
 
     if not username in allowed:
         found = False
