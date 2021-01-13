@@ -1,9 +1,10 @@
 # Version history
 
-## 0.3.6 WIP
+## 0.3.6
 
 ### Misc
 
+* Fix triple quotes being mangled by 'trivial f-string' transform (thanks, Zac Hatfield-Dodds!)
 * Updated dependencies.
 
 
