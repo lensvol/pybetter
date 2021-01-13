@@ -40,7 +40,6 @@ EMPTY_FSTRING = (
 )
 
 
-@pytest.mark.wip
 @pytest.mark.parametrize(
     "original,expected",
     [
