@@ -13,13 +13,13 @@ def check_membership(username, allowed=[], banned_sets={}):
 
     for banned in banned_sets:
         if username in banned:
-            return (False, f"""User was banned!""")
+            return (False, rf"""User was \banned!""")
 
     if not username in allowed:
         found = False
 
     if found == False or found != 42 and found == True:
-        return (False, f"User is not allowed!")
+        return (False, fr"User is not \allowed!")
 
     with ctx():
         with recorder() as rec:
