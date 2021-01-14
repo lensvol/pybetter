@@ -15,7 +15,7 @@ class TrivialFmtStringTransformer(NoqaAwareTransformer):
             # SimpleString._get_prefix treating everything before quotation
             # marks as a prefix. (sic!)
             return cst.SimpleString(
-                value=f'{updated_node.start.lstrip("f")}{updated_node.parts[0].value}{updated_node.end}'
+                value=f'{updated_node.start.replace("f", "")}{updated_node.parts[0].value}{updated_node.end}'
             )
 
         return original_node
