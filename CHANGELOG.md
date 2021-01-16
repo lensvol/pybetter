@@ -1,5 +1,12 @@
 # Version history
 
+## 0.3.6.1
+
+### Misc
+
+* Fix another edge case with transforming "raw" f-strings (thanks, Zac Hatfield-Dodds!)
+
+
 ## 0.3.6
 
 ### Misc
