@@ -3,4 +3,4 @@
     entry: pybetter
     language: python
     types: [python]
-    require_serial: true
+    require_serial: false
