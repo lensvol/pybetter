@@ -1,0 +1,6 @@
+-   id: pybetter
+    name: pybetter
+    entry: pybetter
+    language: python
+    types: [python]
+    require_serial: true
