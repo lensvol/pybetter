@@ -51,7 +51,7 @@ class AllAttributeTransformer(NoqaAwareTransformer):
         config = original_node.config_for_parsing
 
         list_of_names = f",{config.default_newline}{config.default_indent}".join(
-            [repr(name) for name in sorted(self.names)]
+            [repr(name) for name in sorted(dict.fromkeys(self.names))]
         )
 
         all_names = cst.parse_statement(
