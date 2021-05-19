@@ -128,6 +128,40 @@ _abc = None
     NO_CHANGES_MADE,
 )
 
+DUPLICATES_REMOVED = (
+    """
+from typing import overload
+
+@overload
+def a(v: int) -> int: ...
+
+@overload
+def a(v: str) -> str: ...
+
+def b() -> int: ...
+
+def a(v: int | str ) -> int | str: ...
+    """,
+    """
+from typing import overload
+
+@overload
+def a(v: int) -> int: ...
+
+@overload
+def a(v: str) -> str: ...
+
+def b() -> int: ...
+
+def a(v: int | str ) -> int | str: ...
+
+
+__all__ = [
+    'a',
+    'b'
+]
+    """,
+)
 
 @pytest.mark.parametrize(
     "original,expected",
@@ -137,6 +171,7 @@ _abc = None
         PRIVATE_DEFINITIONS_ARE_IGNORED,
         EXISTING_ALL_IS_UNCHANGED,
         EMPTY_ALL_IS_NOT_GENERATED,
+        DUPLICATES_REMOVED,
     ],
     ids=[
         "trivial case",
@@ -144,6 +179,7 @@ _abc = None
         "private definitions are ignored",
         "existing __all__ is unchanged",
         "empty __all__ is not generated",
+        "duplicates removed",
     ],
 )
 def test_generation_of_dunder_all(original, expected):
