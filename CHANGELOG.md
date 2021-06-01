@@ -1,5 +1,17 @@
 # Version history
 
+
+## 0.3.7
+
+### Bugfixes:
+
+* (B004) Fix `typing.overload` annotations causing appearance of duplicate identifiers in `__all__` attribute (thanks, [Bernát Gábor](https://github.com/gaborbernat)!).
+
+### Misc
+
+* Added [support](https://github.com/lensvol/pybetter/blob/master/.pre-commit-hooks.yaml) for `pre-commit` hooks (thanks, [Pavel Kedrinskiy](https://github.com/pavelpy)!).
+* Updated version of LibCST used from **0.3.16** to **0.3.19**. 
+
 ## 0.3.6.1
 
 ### Misc
