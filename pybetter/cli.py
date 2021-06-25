@@ -205,4 +205,4 @@ def main(
         sys.exit(exit_code)
 
 
-__all__ = ["main", "process_file"]
+__all__ = ["main", "process_file", "ALL_IMPROVEMENTS"]
