@@ -49,6 +49,15 @@ TUPLE_INSIDE_RETURN_EXPR = (
 )
 
 
+EMPTY_TUPLE_RETURN_EXPR = (
+    """
+    def foo() -> typing.Tuple:
+        return ()
+    """,
+    NO_CHANGES_MADE,
+)
+
+
 @pytest.mark.parametrize(
     "original,expected",
     [
@@ -56,12 +65,14 @@ TUPLE_INSIDE_RETURN_EXPR = (
         MULTIPLE_ELEMENT_TUPLE,
         MULTILINE_RETURN_TUPLE,
         TUPLE_INSIDE_RETURN_EXPR,
+        EMPTY_TUPLE_RETURN_EXPR,
     ],
     ids=[
         "trivial returned tuple",
         "multiple elements in returned tuple",
         "multi-line returns not processed",
         "tuple inside returned expression",
+        "function returns empty tuple",
     ],
 )
 def test_removal_of_parentheses_in_return(original, expected):
