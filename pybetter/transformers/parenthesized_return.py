@@ -22,9 +22,13 @@ class RemoveParenthesesFromReturn(NoqaAwareTransformer):
         if position.start.line != position.end.line:
             return original_node
 
-        return updated_node.with_deep_changes(
-            cst.ensure_type(updated_node.value, cst.Tuple), lpar=[], rpar=[]
-        )
+        # Removing parentheses around empty tuple does not make sense
+        # and will not result in a correct Python expression (see issue #108)
+        return_tuple = cst.ensure_type(updated_node.value, cst.Tuple)
+        if len(return_tuple.elements) == 0:
+            return original_node
+
+        return updated_node.with_deep_changes(return_tuple, lpar=[], rpar=[])
 
 
 __all__ = ["RemoveParenthesesFromReturn"]
