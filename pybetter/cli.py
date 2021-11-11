@@ -17,6 +17,7 @@ from pybetter.improvements import (
     FixTrivialFmtStringCreation,
     FixTrivialNestedWiths,
     FixUnhashableList,
+    FixNotIsConditionOrder,
 )
 from pybetter.utils import resolve_paths, create_diff, prettify_time_interval
 
@@ -30,6 +31,7 @@ ALL_IMPROVEMENTS = (
     FixTrivialFmtStringCreation,
     FixTrivialNestedWiths,
     FixUnhashableList,
+    FixNotIsConditionOrder,
 )
 
 

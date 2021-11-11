@@ -12,6 +12,7 @@ from pybetter.transformers.equals_none import EqualsNoneIsNoneTransformer
 from pybetter.transformers.mutable_args import ArgEmptyInitTransformer
 from pybetter.transformers.nested_withs import NestedWithTransformer
 from pybetter.transformers.not_in import NotInConditionTransformer
+from pybetter.transformers.not_is import NotIsConditionTransformer
 from pybetter.transformers.parenthesized_return import RemoveParenthesesFromReturn
 from pybetter.transformers.unhashable_list import UnhashableListTransformer
 
@@ -95,6 +96,13 @@ class FixUnhashableList(BaseImprovement):
     TRANSFORMER = UnhashableListTransformer
 
 
+class FixNotIsConditionOrder(BaseImprovement):
+    NAME = "not_is"
+    DESCRIPTION = "Replace 'not A is B' with 'A is not B'"
+    CODE = "B010"
+    TRANSFORMER = NotIsConditionTransformer
+
+
 __all__ = [
     "BaseImprovement",
     "FixBooleanEqualityChecks",
@@ -106,4 +114,5 @@ __all__ = [
     "FixTrivialFmtStringCreation",
     "FixTrivialNestedWiths",
     "FixUnhashableList",
+    "FixNotIsConditionOrder",
 ]
