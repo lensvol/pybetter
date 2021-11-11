@@ -161,7 +161,6 @@ def f():
   
   if a or b or c:
       pass
-  
   ```
   
 * **B007: Convert f-strings without expressions into regular strings.**
@@ -214,7 +213,20 @@ def f():
   c = frozenset([(1, 2), ("a", "b")])
   ```
 
+* **B010: Replace 'not A is B' with 'A is not B'**
 
+  Usage of `A is not B` over `not A is B` is recommended both by Google and [PEP-8](https://www.python.org/dev/peps/pep-0008/#programming-recommendations). Both of those forms are compiled to the same bytecode, but second form has some potential of confusion for the reader.
+  (thanks to @rs2 for submitting this!).  
+
+  ```python
+  # BEFORE:
+  if not obj is Record:
+      sys.exit(-1)
+  
+  # AFTER:
+  if obj is not Record:
+      sys.exit(-1)
+  ```
 
 **NB:** Each of the fixers can be disabled on per-line basis using [flake8's "noqa" comments](http://flake8.pycqa.org/en/3.1.1/user/ignoring-errors.html#in-line-ignoring-errors).
 

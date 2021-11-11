@@ -46,6 +46,7 @@ DIFFERENT_COMPARISONS_IN_ROW = (
     NO_CHANGES_MADE,
 )
 
+
 CONSECUTIVE_COMPARISONS_UNCHANGED = (
     """
     if not (a in b in c in d):
