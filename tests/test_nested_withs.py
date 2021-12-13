@@ -126,6 +126,26 @@ with logger():
 )
 
 
+ASYNC_WITH_IS_LEFT_ALONE = (
+    """
+with open(fn, "w") as fob:
+    async with make_request() as resp:
+        pass
+    """,
+    NO_CHANGES_MADE,
+)
+
+ASYNC_IN_THE_MIDDLE_PREVENTS_COMPOUNDING = (
+    """
+with a():
+    async with abc():
+        with b():
+            pass 
+    """,
+    NO_CHANGES_MADE,
+)
+
+
 @pytest.mark.parametrize(
     "original,expected",
     [
@@ -139,6 +159,8 @@ with logger():
         UNRELATED_CODE_IS_NOT_PROCESSED,
         SINGLE_WITH_IS_LEFT_ALONE,
         ALIASES_ARE_PRESERVED,
+        ASYNC_WITH_IS_LEFT_ALONE,
+        ASYNC_IN_THE_MIDDLE_PREVENTS_COMPOUNDING,
     ],
     ids=[
         "trivial nested 'with'",
@@ -151,6 +173,8 @@ with logger():
         "unrelated code",
         "single 'with' is left alone",
         "'with' aliases are preserved",
+        "'async with' is left alone",
+        "'async' prevents compounding of 'with's",
     ],
 )
 def test_collapse_of_nested_with_statements(original, expected):

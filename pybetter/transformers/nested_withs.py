@@ -50,6 +50,11 @@ class NestedWithTransformer(NoqaAwareTransformer):
             if has_inline_comment(candidate_with.body):
                 break
 
+            # There is no meaningful way `async with` can be merged into
+            # the compound `with` statement.
+            if candidate_with.asynchronous:
+                break
+
             compound_items.extend(candidate_with.items)
             final_body = candidate_with.body
 
