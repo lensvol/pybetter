@@ -1,6 +1,17 @@
 # Version history
 
 
+## 0.4.0
+
+### Features:
+
+* (B010) Added  new fixer for `not A is B => A is not B` situation. (kudos to @rs2)
+
+### Bugfixes:
+
+* (B003) Prevent removal of parentheses around empty tuple (kudos to @rs2) 
+* (B008) Invalid translation with async context manager block (kudos to @lummax)
+
 ## 0.3.7
 
 ### Bugfixes:
