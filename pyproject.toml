@@ -27,7 +27,7 @@ classifiers = [
 [tool.poetry.dependencies]
 python = "^3.6"
 libcst = "^0.3.16"
-click = "^7.0"
+click = ">=7,<9"
 pyemojify = "^0.2.0"
 pygments = "^2.5.2"
 hypothesmith = "^0.1.8"
