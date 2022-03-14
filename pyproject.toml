@@ -34,7 +34,7 @@ hypothesmith = "^0.1.8"
 
 [tool.poetry.dev-dependencies]
 ipdb = "^0.13.2"
-mypy = "^0.812"
+mypy = "^0.940"
 flake8 = "^3.8.3"
 pytest = "^5.4.3"
 pytest-cov = "^2.10.0"
