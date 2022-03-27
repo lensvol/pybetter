@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pybetter"
-version = "0.4.0"
+version = "0.4.1"
 description = "Tool for fixing trivial problems with your code."
 authors = ["Kirill Borisov <lensvol@gmail.com>"]
 license = "MIT"
@@ -25,9 +25,9 @@ classifiers = [
 
 
 [tool.poetry.dependencies]
-python = "^3.6"
-libcst = "^0.3.16"
-click = "^7.0"
+python = ">3.6"
+libcst = "^0.4.1"
+click = ">8.0"
 pyemojify = "^0.2.0"
 pygments = "^2.5.2"
 hypothesmith = "^0.1.8"

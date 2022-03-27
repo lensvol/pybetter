@@ -1,6 +1,13 @@
 # Version history
 
 
+## 0.4.1
+
+### Misc
+* Updated dependencies.
+* Now we use [LibCST](https://github.com/Instagram/LibCST) 0.4.1, which means that you should be able to run `pybetter` on all the Python 3 versions up to **3.11**!
+* Please be kind to each other and hug your loved ones.
+
 ## 0.4.0
 
 ### Features:
