@@ -232,15 +232,30 @@ def f():
 
 ## Installation
 
-```shell script
-# pip install pybetter
+```console
+  
+  pip install pybetter
+
+```
+## Use in pre-commit hooks
+
+```console
+
+  - repo: https://github.com/lensvol/pybetter
+    rev: release-0.3.7
+    hooks:
+    - id: pybetter
+
 ```
 
 ## Getting started with development
 
-```shell script
-# git clone https://github.com/lensvol/pybetter
-# poetry install
+```console
+  
+  git clone https://github.com/lensvol/pybetter
+
+  poetry install
+
 ```
 
 ## License
