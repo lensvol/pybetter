@@ -1,10 +1,10 @@
 # pybetter
-![PyPI](https://img.shields.io/pypi/v/pybetter) 
+[![PyPI](https://img.shields.io/pypi/v/pybetter)](https://pypi.org/project/pybetter/) 
 ![Downloads](https://img.shields.io/pypi/dm/pybetter)
 ![Travis CI](https://img.shields.io/travis/com/lensvol/pybetter)
 ![Code coverage](https://img.shields.io/codecov/c/github/lensvol/pybetter)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pybetter)
-![License](https://img.shields.io/github/license/lensvol/pybetter)
+[![License](https://img.shields.io/github/license/lensvol/pybetter)](LICENSE)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 Tool for fixing trivial problems with your code.
@@ -233,29 +233,24 @@ def f():
 ## Installation
 
 ```console
-  
   pip install pybetter
-
 ```
+
 ## Use in pre-commit hooks
 
 ```console
-
   - repo: https://github.com/lensvol/pybetter
-    rev: release-0.3.7
+    rev: release-0.4.1
     hooks:
     - id: pybetter
-
 ```
 
 ## Getting started with development
 
-```console
-  
+```console  
   git clone https://github.com/lensvol/pybetter
-
+  cd pybetter
   poetry install
-
 ```
 
 ## License
