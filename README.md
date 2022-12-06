@@ -159,8 +159,8 @@ def f():
     
   # AFTER:
   
-  if a or b or c:
-      pass
+  if not a or b or not c:
+    pass
   ```
   
 * **B007: Convert f-strings without expressions into regular strings.**
