@@ -1,0 +1,43 @@
+name: Run tests
+run-name: ${{ github.actor }} runs tests
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build:
+    strategy:
+      matrix:
+        python: ["3.6", "3.7", "3.8", "3.9"]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Install Python ${{ matrix.python }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      # Taken from https://jacobian.org/til/github-actions-poetry/
+      - name: Cache poetry install
+        uses: actions/cache@v2
+        with:
+          path: ~/.local
+          key: poetry-1.1.12-0
+      - uses: snok/install-poetry@v1
+        name: Install Poetry
+        with:
+          version: 1.1.12
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+      - name: Cache virtualenv for future runs
+        id: cache-deps
+        uses: actions/cache@v2
+        with:
+          path: .venv
+          key: pydeps-${{ matrix.python }}-${{ hashFiles('**/poetry.lock') }}
+      - run: poetry install --no-interaction --no-root
+        name: Install dependencies via Poetry
+        if: steps.cache-deps.outputs.cache-hit != 'true'
+      - run: poetry install --no-interaction
+        name: Install project
+      - run: poetry run pytest
