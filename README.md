@@ -1,7 +1,7 @@
 # pybetter
 [![PyPI](https://img.shields.io/pypi/v/pybetter)](https://pypi.org/project/pybetter/) 
 ![Downloads](https://img.shields.io/pypi/dm/pybetter)
-![Travis CI](https://img.shields.io/travis/com/lensvol/pybetter)
+![Build status](https://github.com/lensvol/pybetter/actions/workflows/tests.yml/badge.svg)
 ![Code coverage](https://img.shields.io/codecov/c/github/lensvol/pybetter)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pybetter)
 [![License](https://img.shields.io/github/license/lensvol/pybetter)](LICENSE)
