@@ -49,3 +49,9 @@ jobs:
 
       - run: poetry run pytest
         name: Run tests
+
+      - run: poetry add --dev --no-interaction codecov
+        name: Install codecov.io client
+
+      - run: codecov
+        name: Upload coverage data to codecov.io
