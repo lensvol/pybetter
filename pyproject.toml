@@ -30,7 +30,7 @@ libcst = "^0.4.1"
 click = ">8.0"
 pyemojify = "^0.2.0"
 pygments = "^2.5.2"
-hypothesmith = "^0.1.8"
+hypothesmith = ">=0.1.8,<0.3.0"
 
 [tool.poetry.dev-dependencies]
 ipdb = "^0.13.2"
