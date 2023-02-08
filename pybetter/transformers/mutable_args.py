@@ -1,5 +1,5 @@
 from itertools import takewhile, dropwhile
-from typing import Union, Dict, List, Optional, Tuple
+from typing import Union, List, Optional, Tuple
 
 import libcst as cst
 from libcst import matchers as m
