@@ -42,6 +42,9 @@ pytest-cov = "^2.10.0"
 [tool.poetry.scripts]
 pybetter = 'pybetter.cli:main'
 
+[tool.poetry.group.dev.dependencies]
+codecov = "^2.1.12"
+
 [build-system]
 requires = ["poetry>=0.12"]
 build-backend = "poetry.masonry.api"
