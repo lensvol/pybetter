@@ -45,7 +45,11 @@ class ArgEmptyInitTransformer(NoqaAwareTransformer):
                 continue
 
             mutable_args.append((param.name, param.default))
-            modified_defaults.append(param.with_changes(default=cst.Name("None"),))
+            modified_defaults.append(
+                param.with_changes(
+                    default=cst.Name("None"),
+                )
+            )
 
         if not mutable_args:
             return original_node

@@ -34,7 +34,6 @@ class NestedWithTransformer(NoqaAwareTransformer):
     def leave_With(
         self, original_node: cst.With, updated_node: cst.With
     ) -> Union[cst.BaseStatement, cst.RemovalSentinel]:
-
         candidate_with: cst.With = original_node
         compound_items: List[cst.WithItem] = []
         final_body: cst.BaseSuite = candidate_with.body

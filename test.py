@@ -19,7 +19,7 @@ def check_membership(username, allowed=[], banned_sets={}):
         found = False
 
     if found == False or found != 42 and found == True:
-        return (False, fr"User is not \allowed!")
+        return (False, rf"User is not \allowed!")
 
     with ctx():
         with recorder() as rec:

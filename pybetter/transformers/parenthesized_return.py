@@ -10,7 +10,6 @@ class RemoveParenthesesFromReturn(NoqaAwareTransformer):
     def remove_parentheses_from_return(
         self, original_node: cst.Return, updated_node: cst.Return
     ) -> cst.Return:
-
         # We get position of the `original_node`, since `updated_node` is
         # by definition different and was not processed by metadata provider.
         position: cst.metadata.CodeRange = self.get_metadata(
