@@ -7,7 +7,7 @@ from pybetter.cli import process_file, ALL_IMPROVEMENTS
 
 settings.register_profile(
     "slow_example_generation",
-    suppress_health_check=HealthCheck.all(),
+    suppress_health_check=list(HealthCheck),
 )
 settings.load_profile("slow_example_generation")
 
